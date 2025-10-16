@@ -1,0 +1,1805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>University Portal</title>
+  <style>
+    /* Reset */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html,body { height: 100%; font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+
+    /* Login Page Styles */
+    .login-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      padding: 20px;
+    }
+    
+    .login-wrapper {
+      display: flex;
+      width: 100%;
+      max-width: 900px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      border: 1px solid #e0e0e0;
+    }
+    
+    .login-section {
+      flex: 1;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    
+    .student-login {
+      background: #f8fafc;
+      border-right: 1px solid #e5e7eb;
+    }
+    
+    .faculty-login {
+      background: #ffffff;
+    }
+    
+    .login-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 32px;
+    }
+    
+    .student-icon {
+      background: #dbeafe;
+      color: #1e3a8a;
+    }
+    
+    .faculty-icon {
+      background: #fef2f2;
+      color: #dc2626;
+    }
+    
+    .login-title {
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 24px;
+      font-weight: 800;
+    }
+    
+    .student-title {
+      color: #1e3a8a;
+    }
+    
+    .faculty-title {
+      color: #dc2626;
+    }
+    
+    .login-subtitle {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #6b7280;
+      font-size: 14px;
+    }
+    
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    
+    .form-label {
+      font-weight: 600;
+      font-size: 14px;
+    }
+    
+    .student-label {
+      color: #1e3a8a;
+    }
+    
+    .faculty-label {
+      color: #dc2626;
+    }
+    
+    .form-input {
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      background: #ffffff;
+      font-size: 16px;
+      color: #111827;
+    }
+    
+    .form-input:focus {
+      outline: none;
+    }
+    
+    .student-input:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+    }
+    
+    .faculty-input:focus {
+      border-color: #ef4444;
+      box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+    }
+    
+    .login-btn {
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+      transition: background 0.2s;
+    }
+    
+    .student-btn {
+      background: #1e3a8a;
+      color: white;
+    }
+    
+    .student-btn:hover {
+      background: #1e40af;
+    }
+    
+    .faculty-btn {
+      background: #dc2626;
+      color: white;
+    }
+    
+    .faculty-btn:hover {
+      background: #b91c1c;
+    }
+    
+    .create-account {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #6b7280;
+    }
+    
+    .create-link {
+      color: #3b82f6;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    
+    .create-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Portal Pages (hidden by default) */
+    #studentPortal, #facultyPortal {
+      display: none;
+    }
+
+    /* Themes */
+    body.theme-light {
+      background: #ffffff;
+      color: #111827;
+    }
+    body.theme-dark {
+      background: #111827;
+      color: #f3f4f6;
+    }
+
+    /* Layout */
+    .sidebar {
+      width: 280px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: #f8fafc;
+      border-right: 1px solid #e5e7eb;
+    }
+    body.theme-dark .sidebar { 
+      background: #1f2937; 
+      border-right: 1px solid #374151;
+      color: #f3f4f6;
+    }
+
+    /* Collapsed sidebar (desktop) */
+    .sidebar.collapsed { width: 70px; }
+
+    /* Profile area */
+    .profile { display:flex; flex-direction:column; align-items:center; gap:8px; padding-bottom:8px; }
+    .profile .avatar { 
+      width:70px; height:70px; border-radius:50%; 
+      display:inline-flex; align-items:center; justify-content:center; 
+      font-weight:700; font-size:18px; 
+      border:2px solid;
+      color: white;
+    }
+    .student-avatar {
+      background: #1e3a8a;
+      border-color: #3b82f6;
+    }
+    .faculty-avatar {
+      background: #dc2626;
+      border-color: #ef4444;
+    }
+    body.theme-dark .student-avatar {
+      background: #1e40af;
+      border-color: #60a5fa;
+    }
+    body.theme-dark .faculty-avatar {
+      background: #b91c1c;
+      border-color: #f87171;
+    }
+    .profile .info { text-align:center; line-height:1.1; }
+    .profile h3 { font-size:16px; font-weight:800; }
+    .student-profile h3 { color: #1e3a8a; }
+    .faculty-profile h3 { color: #dc2626; }
+    body.theme-dark .student-profile h3 { color: #60a5fa; }
+    body.theme-dark .faculty-profile h3 { color: #f87171; }
+    .profile p { font-size:13px; opacity:0.95; margin-top:4px; color: #4b5563; }
+    body.theme-dark .profile p { color: #d1d5db; }
+
+    /* When collapsed: shrink avatar and hide text */
+    .sidebar.collapsed .profile .avatar { width:44px; height:44px; font-size:14px; }
+    .sidebar.collapsed .profile .info { display:none; }
+
+    /* Menu with icons + labels */
+    .menu { display:flex; flex-direction:column; gap:6px; margin-top:6px; }
+    .menu button {
+      display:flex; align-items:center; gap:10px; padding:10px; border-radius:8px; border:none;
+      background:transparent; cursor:pointer; font-weight:700; text-align:left;
+      transition: background 0.2s;
+      color: #374151;
+    }
+    body.theme-dark .menu button {
+      color: #d1d5db;
+    }
+    .menu button:hover {
+      background: #e5e7eb;
+    }
+    body.theme-dark .menu button:hover {
+      background: #374151;
+    }
+    .menu button .icon { 
+      width:24px; 
+      text-align:center; 
+      font-size:14px; 
+      font-weight: bold;
+    }
+    .student-menu .icon {
+      color: #1e3a8a;
+    }
+    .faculty-menu .icon {
+      color: #dc2626;
+    }
+    body.theme-dark .student-menu .icon {
+      color: #60a5fa;
+    }
+    body.theme-dark .faculty-menu .icon {
+      color: #f87171;
+    }
+    .menu button.active { 
+      background: #dbeafe; 
+      color: #1e3a8a;
+    }
+    body.theme-dark .menu button.active { 
+      background: #1e3a8a; 
+      color: #dbeafe;
+    }
+    .faculty-menu button.active {
+      background: #fef2f2;
+      color: #dc2626;
+    }
+    body.theme-dark .faculty-menu button.active {
+      background: #7f1d1d;
+      color: #fecaca;
+    }
+
+    /* When collapsed: center icons and hide labels */
+    .sidebar.collapsed .menu button { justify-content:center; }
+    .sidebar.collapsed .menu .label { display:none; }
+
+    /* Main area */
+    .main { flex:1; padding:24px; overflow:auto; min-height:100vh; background: #f9fafb; }
+    body.theme-dark .main { background: #111827; }
+    .topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; gap:12px; }
+    .title { font-weight:800; font-size:20px; }
+    .student-title { color: #1e3a8a; }
+    .faculty-title { color: #dc2626; }
+    body.theme-dark .student-title { color: #60a5fa; }
+    body.theme-dark .faculty-title { color: #f87171; }
+    .clock { font-size:14px; opacity:0.95; color: #6b7280; }
+    body.theme-dark .clock { color: #9ca3af; }
+    .btn { 
+      padding:8px 12px; 
+      border-radius:8px; 
+      border:1px solid #d1d5db; 
+      background: #ffffff; 
+      cursor:pointer; 
+      font-weight:700;
+      color: #111827;
+    }
+    body.theme-dark .btn { 
+      background: #374151; 
+      border:1px solid #4b5563; 
+      color: #f3f4f6; 
+    }
+
+    /* Grid & cards */
+    .grid { display:grid; grid-template-columns: repeat(12,1fr); gap:16px; }
+    .card { 
+      background: #ffffff; 
+      padding:14px; 
+      border-radius:10px; 
+      border:1px solid #e5e7eb;
+      color: #111827;
+    }
+    body.theme-dark .card { 
+      background: #1f2937; 
+      border:1px solid #374151;
+      color: #f3f4f6;
+    }
+    .col-2 { grid-column: span 2; }
+    .col-3 { grid-column: span 3; }
+    .col-4 { grid-column: span 4; }
+    .col-5 { grid-column: span 5; }
+    .col-6 { grid-column: span 6; }
+    .col-7 { grid-column: span 7; }
+    .col-8 { grid-column: span 8; }
+    .col-9 { grid-column: span 9; }
+    .col-12 { grid-column: span 12; }
+
+    /* Inputs & tables */
+    input, textarea, select { 
+      width:100%; 
+      padding:8px; 
+      border-radius:6px; 
+      border:1px solid #d1d5db; 
+      background: #ffffff; 
+      color: #111827;
+    }
+    body.theme-dark input, body.theme-dark textarea, body.theme-dark select { 
+      background: #374151; 
+      border:1px solid #4b5563; 
+      color: #f3f4f6; 
+    }
+    table { width:100%; border-collapse:collapse; font-size:14px; }
+    th, td { padding:8px; border:1px solid #e5e7eb; text-align:left; color: #111827; }
+    body.theme-dark th, body.theme-dark td { 
+      border:1px solid #374151; 
+      color: #f3f4f6;
+    }
+    th {
+      background: #f3f4f6;
+      font-weight: 600;
+    }
+    body.theme-dark th {
+      background: #374151;
+    }
+
+    /* Top-left toggle button */
+    .collapseBtn { 
+      position: fixed; 
+      left:12px; 
+      top:12px; 
+      z-index:2000; 
+      padding:8px 10px; 
+      border-radius:8px; 
+      background: #ffffff; 
+      border:1px solid #d1d5db; 
+      cursor:pointer; 
+      font-weight:700;
+      color: #111827;
+    }
+    body.theme-dark .collapseBtn { 
+      background: #374151; 
+      color: #f3f4f6; 
+      border:1px solid #4b5563; 
+    }
+
+    /* Mobile: sidebar overlays and hides by default */
+    @media (max-width:900px) {
+      .login-wrapper {
+        flex-direction: column;
+      }
+      .student-login {
+        border-right: none;
+        border-bottom: 1px solid #e5e7eb;
+      }
+      .sidebar { 
+        position: fixed; 
+        left: 0; 
+        top:0; 
+        height: 100vh; 
+        z-index: 1200; 
+        display:none; 
+        width:240px; 
+        box-shadow: 2px 0 12px rgba(0,0,0,0.2); 
+      }
+      body.show-sidebar .sidebar { display:flex; }
+      /* Ensure collapsed state for mobile keeps icons centered */
+      .sidebar.collapsed { width:240px; } /* do not shrink on mobile */
+      .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9 { grid-column: span 12; }
+    }
+
+    /* Additional styles */
+    .muted { opacity: 0.7; color: #6b7280; }
+    body.theme-dark .muted { color: #9ca3af; }
+    .card-header { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      margin-bottom: 12px; 
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    body.theme-dark .card-header {
+      border-bottom: 1px solid #374151;
+    }
+    .card-title { font-weight: 800; font-size: 16px; }
+    .student-card .card-title { color: #1e3a8a; }
+    .faculty-card .card-title { color: #dc2626; }
+    body.theme-dark .student-card .card-title { color: #60a5fa; }
+    body.theme-dark .faculty-card .card-title { color: #f87171; }
+    .action-btn { 
+      background: none; 
+      border: none; 
+      cursor: pointer; 
+      font-size: 14px; 
+      opacity: 0.7;
+      text-decoration: underline;
+    }
+    .student-action { color: #1e3a8a; }
+    .faculty-action { color: #dc2626; }
+    body.theme-dark .student-action { color: #60a5fa; }
+    body.theme-dark .faculty-action { color: #f87171; }
+    .action-btn:hover { opacity: 1; }
+    .schedule-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    body.theme-dark .schedule-item {
+      border-bottom: 1px solid #374151;
+    }
+    .schedule-time { font-weight: 600; width: 80px; }
+    .schedule-course { flex: 1; margin-left: 12px; }
+    .schedule-location { opacity: 0.7; font-size: 12px; width: 100px; text-align: right; }
+    .notification-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: #dc2626;
+      color: white;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .menu-item-wrapper {
+      position: relative;
+    }
+    .logout-btn {
+      margin-top: auto;
+      background: rgba(220, 38, 38, 0.1);
+      color: #dc2626;
+      border: 1px solid rgba(220, 38, 38, 0.2);
+    }
+    body.theme-dark .logout-btn {
+      background: rgba(220, 38, 38, 0.2);
+      color: #f87171;
+      border: 1px solid rgba(220, 38, 38, 0.3);
+    }
+    .stats-container {
+      display: flex;
+      gap: 12px;
+      margin: 12px 0;
+    }
+    .stat-card {
+      flex: 1;
+      padding: 12px;
+      border-radius: 8px;
+      background: #f3f4f6;
+      text-align: center;
+    }
+    body.theme-dark .stat-card {
+      background: #374151;
+    }
+    .stat-value {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .student-stat .stat-value { color: #1e3a8a; }
+    .faculty-stat .stat-value { color: #dc2626; }
+    body.theme-dark .student-stat .stat-value { color: #60a5fa; }
+    body.theme-dark .faculty-stat .stat-value { color: #f87171; }
+    .stat-label {
+      font-size: 12px;
+      opacity: 0.8;
+    }
+    .progress-bar {
+      height: 6px;
+      background: #e5e7eb;
+      border-radius: 3px;
+      margin: 8px 0;
+      overflow: hidden;
+    }
+    body.theme-dark .progress-bar {
+      background: #4b5563;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 3px;
+    }
+    .student-progress {
+      background: linear-gradient(90deg, #1e3a8a, #3b82f6);
+    }
+    .faculty-progress {
+      background: linear-gradient(90deg, #dc2626, #ef4444);
+    }
+    
+    /* Google Classroom-like Styles */
+    .classroom-header {
+      background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+      color: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+    .faculty-classroom-header {
+      background: linear-gradient(135deg, #dc2626, #ef4444);
+    }
+    .class-code {
+      background: rgba(255,255,255,0.2);
+      padding: 4px 12px;
+      border-radius: 16px;
+      font-size: 14px;
+      display: inline-block;
+      margin-top: 8px;
+    }
+    .classroom-nav {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    body.theme-dark .classroom-nav {
+      border-bottom: 1px solid #374151;
+    }
+    .classroom-nav-item {
+      padding: 12px 0;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      font-weight: 600;
+    }
+    .classroom-nav-item.active {
+      border-bottom-color: #1e3a8a;
+      color: #1e3a8a;
+    }
+    .faculty-classroom-nav-item.active {
+      border-bottom-color: #dc2626;
+      color: #dc2626;
+    }
+    body.theme-dark .classroom-nav-item.active {
+      border-bottom-color: #60a5fa;
+      color: #60a5fa;
+    }
+    body.theme-dark .faculty-classroom-nav-item.active {
+      border-bottom-color: #f87171;
+      color: #f87171;
+    }
+    .stream-post {
+      background: white;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    body.theme-dark .stream-post {
+      background: #1f2937;
+      border: 1px solid #374151;
+    }
+    .post-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .post-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: white;
+    }
+    .student-post-avatar {
+      background: #1e3a8a;
+    }
+    .faculty-post-avatar {
+      background: #dc2626;
+    }
+    .post-info {
+      flex: 1;
+    }
+    .post-author {
+      font-weight: 600;
+    }
+    .post-time {
+      font-size: 12px;
+      opacity: 0.7;
+    }
+    .assignment-card {
+      background: #f8fafc;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 12px 0;
+      border-left: 4px solid #1e3a8a;
+    }
+    body.theme-dark .assignment-card {
+      background: #374151;
+      border-left-color: #60a5fa;
+    }
+    .faculty-assignment-card {
+      border-left-color: #dc2626;
+    }
+    body.theme-dark .faculty-assignment-card {
+      border-left-color: #f87171;
+    }
+    .assignment-title {
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .assignment-due {
+      font-size: 14px;
+      opacity: 0.7;
+      margin-bottom: 8px;
+    }
+    .assignment-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .material-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border-radius: 6px;
+      background: #f8fafc;
+      margin-bottom: 8px;
+    }
+    body.theme-dark .material-item {
+      background: #374151;
+    }
+    .material-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #e5e7eb;
+    }
+    body.theme-dark .material-icon {
+      background: #4b5563;
+    }
+    .student-material-icon {
+      background: #dbeafe;
+      color: #1e3a8a;
+    }
+    .faculty-material-icon {
+      background: #fef2f2;
+      color: #dc2626;
+    }
+    .material-info {
+      flex: 1;
+    }
+    .material-name {
+      font-weight: 600;
+    }
+    .material-details {
+      font-size: 14px;
+      opacity: 0.7;
+    }
+    .student-work-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .student-work-card {
+      background: white;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      padding: 16px;
+    }
+    body.theme-dark .student-work-card {
+      background: #1f2937;
+      border: 1px solid #374151;
+    }
+    .work-status {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 8px;
+    }
+    .status-turned-in {
+      background: #dcfce7;
+      color: #166534;
+    }
+    .status-missing {
+      background: #fef2f2;
+      color: #dc2626;
+    }
+    .status-assigned {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+    .grade-display {
+      font-weight: 600;
+      margin-top: 8px;
+    }
+    .people-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .person-card {
+      background: white;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      padding: 16px;
+      text-align: center;
+    }
+    body.theme-dark .person-card {
+      background: #1f2937;
+      border: 1px solid #374151;
+    }
+    .person-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: white;
+      margin: 0 auto 12px;
+    }
+    .student-person-avatar {
+      background: #1e3a8a;
+    }
+    .faculty-person-avatar {
+      background: #dc2626;
+    }
+    .compose-area {
+      background: white;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    body.theme-dark .compose-area {
+      background: #1f2937;
+      border: 1px solid #374151;
+    }
+    .compose-input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      resize: vertical;
+      min-height: 100px;
+    }
+    body.theme-dark .compose-input {
+      background: #374151;
+      border: 1px solid #4b5563;
+      color: #f3f4f6;
+    }
+  </style>
+</head>
+<body class="theme-light">
+  <!-- Login Page -->
+  <div id="loginPage" class="login-container">
+    <div class="login-wrapper">
+      <!-- Student Login -->
+      <div class="login-section student-login">
+        <div class="login-icon student-icon">🎓</div>
+        <h2 class="login-title student-title">Students</h2>
+        <p class="login-subtitle">Access your courses, grades, and academic resources</p>
+        
+        <form class="login-form" id="studentLoginForm">
+          <div class="form-group">
+            <label class="form-label student-label" for="studentFullName">Full Name</label>
+            <input type="text" id="studentFullName" class="form-input student-input" placeholder="Juan Dela Cruz" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label student-label" for="studentNumber">Student Number</label>
+            <input type="text" id="studentNumber" class="form-input student-input" placeholder="UA202201623" required>
+          </div>
+          <button type="submit" class="login-btn student-btn">Access Portal</button>
+        </form>
+        
+        <div class="create-account">
+          New student? <a href="#" class="create-link">Register here</a>
+        </div>
+      </div>
+      
+      <!-- Faculty Login -->
+      <div class="login-section faculty-login">
+        <div class="login-icon faculty-icon">👨‍🏫</div>
+        <h2 class="login-title faculty-title">Faculty</h2>
+        <p class="login-subtitle">Manage courses, grades, and academic administration</p>
+        
+        <form class="login-form" id="facultyLoginForm">
+          <div class="form-group">
+            <label class="form-label faculty-label" for="facultyUsername">Username</label>
+            <input type="text" id="facultyUsername" class="form-input faculty-input" placeholder="Faculty ID" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label faculty-label" for="facultyPassword">Password</label>
+            <input type="password" id="facultyPassword" class="form-input faculty-input" placeholder="Enter your password" required>
+          </div>
+          <button type="submit" class="login-btn faculty-btn">Faculty Login</button>
+        </form>
+        
+        <div class="create-account">
+          Faculty member? <a href="#" class="create-link">Request access</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Student Portal -->
+  <div id="studentPortal">
+    <button class="collapseBtn">☰</button>
+
+    <aside class="sidebar" id="studentSidebar">
+      <div class="profile student-profile">
+        <div class="avatar student-avatar" id="studentAvatar">JD</div>
+        <div class="info">
+          <h3 id="studentName">Juan Dela Cruz</h3>
+          <p id="studentCourse">BS Information Technology</p>
+          <p id="studentID">ID: UA202201623</p>
+        </div>
+      </div>
+
+      <nav class="menu student-menu" id="studentMenu">
+        <div class="menu-item-wrapper">
+          <button class="active" data-section="dashboard"><span class="icon">≡</span><span class="label">Dashboard</span></button>
+        </div>
+        <div class="menu-item-wrapper">
+          <button data-section="classes"><span class="icon">📚</span><span class="label">Classes</span></button>
+        </div>
+        <div class="menu-item-wrapper">
+          <button data-section="schedule"><span class="icon">⏰</span><span class="label">Schedule</span></button>
+        </div>
+        <div class="menu-item-wrapper">
+          <button data-section="grades"><span class="icon">A+</span><span class="label">Grades</span></button>
+        </div>
+        <div class="menu-item-wrapper">
+          <button data-section="calendar"><span class="icon">📅</span><span class="label">Calendar</span></button>
+        </div>
+        <button class="logout-btn" id="studentLogoutBtn">Logout</button>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div>
+          <div class="title student-title" id="studentPageTitle">Dashboard</div>
+          <div class="clock" id="studentClock">--:--</div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center;">
+          <div id="studentThemeInfo">Light Mode</div>
+          <button id="studentThemeToggle" class="btn">Toggle Theme</button>
+        </div>
+      </div>
+
+      <section id="studentContentArea">
+        <!-- Student Dashboard -->
+        <div class="grid" id="studentDashboardSection">
+          <div class="card student-card col-4">
+            <div class="card-header">
+              <div class="card-title">Student Profile</div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:center;">
+              <div style="width:64px;height:64px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;background:#1e3a8a;color:white;" id="studentCardAvatar">JD</div>
+              <div>
+                <div style="font-weight:800" id="studentCardName">Juan Dela Cruz</div>
+                <div class="muted" id="studentCardCourse">BS Information Technology</div>
+                <div class="muted" id="studentCardID">ID: UA202201623</div>
+              </div>
+            </div>
+            <div style="height:10px"></div>
+            <div class="muted">Year: 3rd Year</div>
+            <div class="muted">Status: Regular</div>
+            <div class="muted">College: Computer Studies</div>
+          </div>
+
+          <div class="card student-card col-8">
+            <div class="card-header">
+              <div class="card-title">Academic Summary</div>
+              <button class="action-btn student-action" id="studentViewTranscript">View Transcript</button>
+            </div>
+            <div class="stats-container">
+              <div class="stat-card student-stat">
+                <div class="stat-value" id="studentCurrentGPA">3.25</div>
+                <div class="stat-label">Current GPA</div>
+              </div>
+              <div class="stat-card student-stat">
+                <div class="stat-value" id="studentCompletedCredits">78</div>
+                <div class="stat-label">Credits Completed</div>
+              </div>
+              <div class="stat-card student-stat">
+                <div class="stat-value" id="studentEnrolledCourses">5</div>
+                <div class="stat-label">Current Courses</div>
+              </div>
+              <div class="stat-card student-stat">
+                <div class="stat-value" id="studentGraduationProgress">65%</div>
+                <div class="stat-label">Graduation Progress</div>
+              </div>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill student-progress" style="width: 65%"></div>
+            </div>
+            <div class="muted">You need 42 more credits to graduate</div>
+          </div>
+
+          <div class="card student-card col-12">
+            <div class="card-header">
+              <div class="card-title">My Classes</div>
+              <button class="action-btn student-action" id="studentJoinClass">Join Class</button>
+            </div>
+            <div class="course-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+              <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openStudentClassroom('CS301')">
+                <div style="font-weight: 800; font-size: 18px; color: #1e3a8a;">CS301</div>
+                <div style="font-size: 16px; margin-bottom: 8px;">Data Structures</div>
+                <div class="muted">Dr. Johnson</div>
+                <div class="muted" style="margin-top: 8px;">2 new announcements • 1 assignment due</div>
+              </div>
+              <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openStudentClassroom('MATH202')">
+                <div style="font-weight: 800; font-size: 18px; color: #1e3a8a;">MATH202</div>
+                <div style="font-size: 16px; margin-bottom: 8px;">Calculus II</div>
+                <div class="muted">Dr. Smith</div>
+                <div class="muted" style="margin-top: 8px;">1 new announcement • Quiz tomorrow</div>
+              </div>
+              <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openStudentClassroom('ENG201')">
+                <div style="font-weight: 800; font-size: 18px; color: #1e3a8a;">ENG201</div>
+                <div style="font-size: 16px; margin-bottom: 8px;">English Literature</div>
+                <div class="muted">Prof. Davis</div>
+                <div class="muted" style="margin-top: 8px;">Essay due Friday</div>
+              </div>
+              <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openStudentClassroom('PHY101')">
+                <div style="font-weight: 800; font-size: 18px; color: #1e3a8a;">PHY101</div>
+                <div style="font-size: 16px; margin-bottom: 8px;">Physics I</div>
+                <div class="muted">Dr. Wilson</div>
+                <div class="muted" style="margin-top: 8px;">Lab report due next week</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Student Classroom View -->
+        <div class="grid" id="studentClassroomSection" style="display:none">
+          <div class="col-12">
+            <div class="classroom-header" id="studentClassHeader">
+              <h2 id="studentClassName">Data Structures - CS301</h2>
+              <div class="muted" style="color: rgba(255,255,255,0.8);">Dr. Johnson • Fall 2025</div>
+              <div class="class-code">Class Code: cs301-abc123</div>
+            </div>
+
+            <div class="classroom-nav">
+              <div class="classroom-nav-item active" data-tab="stream">Stream</div>
+              <div class="classroom-nav-item" data-tab="classwork">Classwork</div>
+              <div class="classroom-nav-item" data-tab="people">People</div>
+            </div>
+
+            <div id="studentClassContent">
+              <!-- Stream Tab -->
+              <div class="class-tab" id="studentStreamTab">
+                <div class="compose-area">
+                  <textarea class="compose-input" placeholder="Share something with your class..."></textarea>
+                  <div style="display:flex;justify-content:flex-end;gap:12px;">
+                    <button class="btn" style="background:#e5e7eb;">Cancel</button>
+                    <button class="btn student-btn">Post</button>
+                  </div>
+                </div>
+
+                <div class="stream-post">
+                  <div class="post-header">
+                    <div class="post-avatar student-post-avatar">DJ</div>
+                    <div class="post-info">
+                      <div class="post-author">Dr. Johnson</div>
+                      <div class="post-time">Yesterday at 2:30 PM</div>
+                    </div>
+                  </div>
+                  <div>
+                    <p>Reminder: The midterm exam will be held next Wednesday during our regular class time. Please bring your student ID and a calculator.</p>
+                    <p>The exam will cover everything we've learned up to and including binary search trees.</p>
+                  </div>
+                </div>
+
+                <div class="stream-post">
+                  <div class="post-header">
+                    <div class="post-avatar student-post-avatar">DJ</div>
+                    <div class="post-info">
+                      <div class="post-author">Dr. Johnson</div>
+                      <div class="post-time">October 10 at 10:15 AM</div>
+                    </div>
+                  </div>
+                  <div>
+                    <p>New assignment posted: "Binary Search Tree Implementation"</p>
+                    <div class="assignment-card">
+                      <div class="assignment-title">Assignment 4: Binary Search Tree</div>
+                      <div class="assignment-due">Due: October 25, 2025 at 11:59 PM</div>
+                      <div class="muted">Implement a binary search tree with insertion, deletion, and traversal operations.</div>
+                      <div class="assignment-actions">
+                        <button class="btn student-btn">View Assignment</button>
+                        <button class="btn">Add to Calendar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="stream-post">
+                  <div class="post-header">
+                    <div class="post-avatar student-post-avatar">DJ</div>
+                    <div class="post-info">
+                      <div class="post-author">Dr. Johnson</div>
+                      <div class="post-time">October 5 at 3:45 PM</div>
+                    </div>
+                  </div>
+                  <div>
+                    <p>I've uploaded the slides from today's lecture on AVL Trees. You can find them in the Classwork section under "Lecture Materials".</p>
+                    <div class="material-item">
+                      <div class="material-icon student-material-icon">📊</div>
+                      <div class="material-info">
+                        <div class="material-name">Lecture 8: AVL Trees</div>
+                        <div class="material-details">Slides • 2.4 MB</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Classwork Tab -->
+              <div class="class-tab" id="studentClassworkTab" style="display:none">
+                <div class="card student-card">
+                  <div class="card-header">
+                    <div class="card-title">Assignments</div>
+                  </div>
+                  <div class="student-work-grid">
+                    <div class="student-work-card">
+                      <div class="assignment-title">Assignment 4: Binary Search Tree</div>
+                      <div class="assignment-due">Due: Oct 25, 11:59 PM</div>
+                      <div class="muted">Implement BST operations</div>
+                      <div class="work-status status-assigned">Assigned</div>
+                    </div>
+                    <div class="student-work-card">
+                      <div class="assignment-title">Assignment 3: Linked Lists</div>
+                      <div class="assignment-due">Due: Oct 12, 11:59 PM</div>
+                      <div class="muted">Singly and doubly linked lists</div>
+                      <div class="work-status status-turned-in">Turned In</div>
+                      <div class="grade-display">Grade: 42/50</div>
+                    </div>
+                    <div class="student-work-card">
+                      <div class="assignment-title">Assignment 2: Recursion</div>
+                      <div class="assignment-due">Due: Sep 28, 11:59 PM</div>
+                      <div class="muted">Recursive algorithms</div>
+                      <div class="work-status status-turned-in">Turned In</div>
+                      <div class="grade-display">Grade: 45/50</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card student-card" style="margin-top: 20px;">
+                  <div class="card-header">
+                    <div class="card-title">Materials</div>
+                  </div>
+                  <div class="material-item">
+                    <div class="material-icon student-material-icon">📊</div>
+                    <div class="material-info">
+                      <div class="material-name">Lecture 8: AVL Trees</div>
+                      <div class="material-details">Slides • October 5</div>
+                    </div>
+                  </div>
+                  <div class="material-item">
+                    <div class="material-icon student-material-icon">📄</div>
+                    <div class="material-info">
+                      <div class="material-name">Binary Search Trees Reading</div>
+                      <div class="material-details">PDF • October 1</div>
+                    </div>
+                  </div>
+                  <div class="material-item">
+                    <div class="material-icon student-material-icon">📊</div>
+                    <div class="material-info">
+                      <div class="material-name">Lecture 7: Binary Trees</div>
+                      <div class="material-details">Slides • September 28</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- People Tab -->
+              <div class="class-tab" id="studentPeopleTab" style="display:none">
+                <div class="card student-card">
+                  <div class="card-header">
+                    <div class="card-title">Teachers</div>
+                  </div>
+                  <div class="people-grid">
+                    <div class="person-card">
+                      <div class="person-avatar faculty-person-avatar">DJ</div>
+                      <div style="font-weight: 600;">Dr. Johnson</div>
+                      <div class="muted">Instructor</div>
+                      <div class="muted">johnson@university.edu</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card student-card" style="margin-top: 20px;">
+                  <div class="card-header">
+                    <div class="card-title">Students (42)</div>
+                  </div>
+                  <div class="people-grid">
+                    <div class="person-card">
+                      <div class="person-avatar student-person-avatar">JD</div>
+                      <div style="font-weight: 600;">Juan Dela Cruz</div>
+                      <div class="muted">You</div>
+                    </div>
+                    <div class="person-card">
+                      <div class="person-avatar student-person-avatar">MR</div>
+                      <div style="font-weight: 600;">Maria Rodriguez</div>
+                      <div class="muted">Classmate</div>
+                    </div>
+                    <div class="person-card">
+                      <div class="person-avatar student-person-avatar">AJ</div>
+                      <div style="font-weight: 600;">Alex Johnson</div>
+                      <div class="muted">Classmate</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Faculty Portal -->
+  <div id="facultyPortal">
+    <button class="collapseBtn">☰</button>
+
+    <aside class="sidebar" id="facultySidebar">
+      <div class="profile faculty-profile">
+        <div class="avatar faculty-avatar" id="facultyAvatar">JD</div>
+        <div class="info">
+          <h3 id="facultyName">Dr. Jane Doe</h3>
+          <p id="facultyDepartment">Computer Science</p>
+          <p id="facultyID">ID: F2021001</p>
+        </div>
+      </div>
+
+      <nav class="menu faculty-menu" id="facultyMenu">
+        <div class="menu-item-wrapper">
+          <button class="active" data-section="dashboard"><span class="icon">≡</span><span class="label">Dashboard</span></button>
+        </div>
+        <div class="menu-item-wrapper">
+          <button data-section="classes"><span class="icon">📚</span><span class="label">Classes</span></button>
+        </div>
+        <div class="menu-item-wrapper">
+          <button data-section="grading"><span class="icon">A+</span><span class="label">Grading</span></button>
+        </div>
+        <div class="menu-item-wrapper">
+          <button data-section="calendar"><span class="icon">📅</span><span class="label">Calendar</span></button>
+        </div>
+        <button class="logout-btn" id="facultyLogoutBtn">Logout</button>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div>
+          <div class="title faculty-title" id="facultyPageTitle">Dashboard</div>
+          <div class="clock" id="facultyClock">--:--</div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center;">
+          <div id="facultyThemeInfo">Light Mode</div>
+          <button id="facultyThemeToggle" class="btn">Toggle Theme</button>
+        </div>
+      </div>
+
+      <section id="facultyContentArea">
+        <div class="grid">
+          <div class="card faculty-card col-4">
+            <div class="card-header">
+              <div class="card-title">Faculty Profile</div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:center;">
+              <div style="width:64px;height:64px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;background:#dc2626;color:white;" id="facultyCardAvatar">JD</div>
+              <div>
+                <div style="font-weight:800" id="facultyCardName">Dr. Jane Doe</div>
+                <div class="muted" id="facultyCardDepartment">Computer Science</div>
+                <div class="muted" id="facultyCardID">ID: F2021001</div>
+              </div>
+            </div>
+            <div style="height:10px"></div>
+            <div class="muted">Position: Associate Professor</div>
+            <div class="muted">Office: CS Building 305</div>
+            <div class="muted">Email: j.doe@university.edu</div>
+          </div>
+
+          <div class="card faculty-card col-8">
+            <div class="card-header">
+              <div class="card-title">Teaching Summary</div>
+              <button class="action-btn faculty-action" id="facultyViewReports">View Reports</button>
+            </div>
+            <div class="stats-container">
+              <div class="stat-card faculty-stat">
+                <div class="stat-value" id="facultyCurrentCourses">4</div>
+                <div class="stat-label">Current Courses</div>
+              </div>
+              <div class="stat-card faculty-stat">
+                <div class="stat-value" id="facultyTotalStudents">142</div>
+                <div class="stat-label">Total Students</div>
+              </div>
+              <div class="stat-card faculty-stat">
+                <div class="stat-value" id="facultyPendingGrading">23</div>
+                <div class="stat-label">Pending Grading</div>
+              </div>
+              <div class="stat-card faculty-stat">
+                <div class="stat-value" id="facultyOfficeHours">12</div>
+                <div class="stat-label">Weekly Hours</div>
+              </div>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill faculty-progress" style="width: 75%"></div>
+            </div>
+            <div class="muted">Semester Progress: 75% complete</div>
+          </div>
+
+          <div class="card faculty-card col-12">
+            <div class="card-header">
+              <div class="card-title">My Classes</div>
+              <button class="action-btn faculty-action" id="facultyCreateClass">Create Class</button>
+            </div>
+            <div class="course-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+              <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openFacultyClassroom('CS301')">
+                <div style="font-weight: 800; font-size: 18px; color: #dc2626;">CS301</div>
+                <div style="font-size: 16px; margin-bottom: 8px;">Data Structures</div>
+                <div class="muted">42 students • Fall 2025</div>
+                <div class="muted" style="margin-top: 8px;">5 assignments • 23 to grade</div>
+              </div>
+              <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openFacultyClassroom('CS401')">
+                <div style="font-weight: 800; font-size: 18px; color: #dc2626;">CS401</div>
+                <div style="font-size: 16px; margin-bottom: 8px;">Algorithms</div>
+                <div class="muted">38 students • Fall 2025</div>
+                <div class="muted" style="margin-top: 8px;">3 assignments • All graded</div>
+              </div>
+              <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openFacultyClassroom('CS501')">
+                <div style="font-weight: 800; font-size: 18px; color: #dc2626;">CS501</div>
+                <div style="font-size: 16px; margin-bottom: 8px;">Advanced Databases</div>
+                <div class="muted">24 students • Fall 2025</div>
+                <div class="muted" style="margin-top: 8px;">Project phase 2 starting</div>
+              </div>
+              <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openFacultyClassroom('CS601')">
+                <div style="font-weight: 800; font-size: 18px; color: #dc2626;">CS601</div>
+                <div style="font-size: 16px; margin-bottom: 8px;">Machine Learning</div>
+                <div class="muted">18 students • Fall 2025</div>
+                <div class="muted" style="margin-top: 8px;">Research papers discussion</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Faculty Classroom View -->
+        <div class="grid" id="facultyClassroomSection" style="display:none">
+          <div class="col-12">
+            <div class="classroom-header faculty-classroom-header" id="facultyClassHeader">
+              <h2 id="facultyClassName">Data Structures - CS301</h2>
+              <div class="muted" style="color: rgba(255,255,255,0.8);">42 students • Fall 2025</div>
+              <div class="class-code">Class Code: cs301-abc123</div>
+            </div>
+
+            <div class="classroom-nav">
+              <div class="classroom-nav-item faculty-classroom-nav-item active" data-tab="stream">Stream</div>
+              <div class="classroom-nav-item faculty-classroom-nav-item" data-tab="classwork">Classwork</div>
+              <div class="classroom-nav-item faculty-classroom-nav-item" data-tab="people">People</div>
+              <div class="classroom-nav-item faculty-classroom-nav-item" data-tab="grades">Grades</div>
+            </div>
+
+            <div id="facultyClassContent">
+              <!-- Stream Tab -->
+              <div class="class-tab" id="facultyStreamTab">
+                <div class="compose-area">
+                  <textarea class="compose-input" placeholder="Announce something to your class..."></textarea>
+                  <div style="display:flex;justify-content:flex-end;gap:12px;">
+                    <button class="btn" style="background:#e5e7eb;">Cancel</button>
+                    <button class="btn faculty-btn">Post</button>
+                  </div>
+                </div>
+
+                <div class="stream-post">
+                  <div class="post-header">
+                    <div class="post-avatar faculty-post-avatar">JD</div>
+                    <div class="post-info">
+                      <div class="post-author">Dr. Jane Doe</div>
+                      <div class="post-time">Yesterday at 2:30 PM</div>
+                    </div>
+                  </div>
+                  <div>
+                    <p>Reminder: The midterm exam will be held next Wednesday during our regular class time. Please bring your student ID and a calculator.</p>
+                    <p>The exam will cover everything we've learned up to and including binary search trees.</p>
+                  </div>
+                </div>
+
+                <div class="stream-post">
+                  <div class="post-header">
+                    <div class="post-avatar faculty-post-avatar">JD</div>
+                    <div class="post-info">
+                      <div class="post-author">Dr. Jane Doe</div>
+                      <div class="post-time">October 10 at 10:15 AM</div>
+                    </div>
+                  </div>
+                  <div>
+                    <p>New assignment posted: "Binary Search Tree Implementation"</p>
+                    <div class="assignment-card faculty-assignment-card">
+                      <div class="assignment-title">Assignment 4: Binary Search Tree</div>
+                      <div class="assignment-due">Due: October 25, 2025 at 11:59 PM</div>
+                      <div class="muted">Implement a binary search tree with insertion, deletion, and traversal operations.</div>
+                      <div class="assignment-actions">
+                        <button class="btn faculty-btn">Edit Assignment</button>
+                        <button class="btn">View Submissions</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Classwork Tab -->
+              <div class="class-tab" id="facultyClassworkTab" style="display:none">
+                <div class="card faculty-card">
+                  <div class="card-header">
+                    <div class="card-title">Assignments</div>
+                    <button class="btn faculty-btn">Create Assignment</button>
+                  </div>
+                  <div class="student-work-grid">
+                    <div class="student-work-card">
+                      <div class="assignment-title">Assignment 4: Binary Search Tree</div>
+                      <div class="assignment-due">Due: Oct 25, 11:59 PM</div>
+                      <div class="muted">42 students • 0 turned in</div>
+                      <div class="assignment-actions">
+                        <button class="btn faculty-btn">Edit</button>
+                        <button class="btn">View</button>
+                      </div>
+                    </div>
+                    <div class="student-work-card">
+                      <div class="assignment-title">Assignment 3: Linked Lists</div>
+                      <div class="assignment-due">Due: Oct 12, 11:59 PM</div>
+                      <div class="muted">42 students • 40 turned in</div>
+                      <div class="assignment-actions">
+                        <button class="btn faculty-btn">Grade</button>
+                        <button class="btn">View</button>
+                      </div>
+                    </div>
+                    <div class="student-work-card">
+                      <div class="assignment-title">Assignment 2: Recursion</div>
+                      <div class="assignment-due">Due: Sep 28, 11:59 PM</div>
+                      <div class="muted">42 students • All graded</div>
+                      <div class="assignment-actions">
+                        <button class="btn">View Grades</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- People Tab -->
+              <div class="class-tab" id="facultyPeopleTab" style="display:none">
+                <div class="card faculty-card">
+                  <div class="card-header">
+                    <div class="card-title">Teachers</div>
+                    <button class="btn faculty-btn">Invite Teachers</button>
+                  </div>
+                  <div class="people-grid">
+                    <div class="person-card">
+                      <div class="person-avatar faculty-person-avatar">JD</div>
+                      <div style="font-weight: 600;">Dr. Jane Doe</div>
+                      <div class="muted">Instructor</div>
+                      <div class="muted">j.doe@university.edu</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card faculty-card" style="margin-top: 20px;">
+                  <div class="card-header">
+                    <div class="card-title">Students (42)</div>
+                    <button class="btn faculty-btn">Invite Students</button>
+                  </div>
+                  <div class="people-grid">
+                    <div class="person-card">
+                      <div class="person-avatar student-person-avatar">JD</div>
+                      <div style="font-weight: 600;">Juan Dela Cruz</div>
+                      <div class="muted">UA202201623</div>
+                      <div class="muted">juan.delacruz@student.edu</div>
+                    </div>
+                    <div class="person-card">
+                      <div class="person-avatar student-person-avatar">MR</div>
+                      <div style="font-weight: 600;">Maria Rodriguez</div>
+                      <div class="muted">UA202201624</div>
+                      <div class="muted">maria.rodriguez@student.edu</div>
+                    </div>
+                    <div class="person-card">
+                      <div class="person-avatar student-person-avatar">AJ</div>
+                      <div style="font-weight: 600;">Alex Johnson</div>
+                      <div class="muted">UA202201625</div>
+                      <div class="muted">alex.johnson@student.edu</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Grades Tab -->
+              <div class="class-tab" id="facultyGradesTab" style="display:none">
+                <div class="card faculty-card">
+                  <div class="card-header">
+                    <div class="card-title">Gradebook</div>
+                    <button class="btn faculty-btn">Export Grades</button>
+                  </div>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Student</th>
+                        <th>Assignment 1</th>
+                        <th>Assignment 2</th>
+                        <th>Assignment 3</th>
+                        <th>Current Grade</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Juan Dela Cruz</td>
+                        <td>48/50</td>
+                        <td>45/50</td>
+                        <td>42/50</td>
+                        <td>90%</td>
+                      </tr>
+                      <tr>
+                        <td>Maria Rodriguez</td>
+                        <td>50/50</td>
+                        <td>48/50</td>
+                        <td>-</td>
+                        <td>87%</td>
+                      </tr>
+                      <tr>
+                        <td>Alex Johnson</td>
+                        <td>45/50</td>
+                        <td>42/50</td>
+                        <td>40/50</td>
+                        <td>85%</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // Login functionality
+    const loginPage = document.getElementById('loginPage');
+    const studentPortal = document.getElementById('studentPortal');
+    const facultyPortal = document.getElementById('facultyPortal');
+    const studentLoginForm = document.getElementById('studentLoginForm');
+    const facultyLoginForm = document.getElementById('facultyLoginForm');
+    const studentFullNameInput = document.getElementById('studentFullName');
+    const studentNumberInput = document.getElementById('studentNumber');
+    const facultyUsernameInput = document.getElementById('facultyUsername');
+    const facultyPasswordInput = document.getElementById('facultyPassword');
+
+    // Student login - simplified (no password required)
+    studentLoginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const fullName = studentFullNameInput.value.trim();
+      const studentNumber = studentNumberInput.value.trim();
+      
+      if (!fullName || !studentNumber) {
+        alert('Please enter both your full name and student number');
+        return;
+      }
+      
+      // Simple validation - just check that fields are filled
+      if (fullName && studentNumber) {
+        loginPage.style.display = 'none';
+        studentPortal.style.display = 'block';
+        initializeStudentPortal(fullName, studentNumber);
+      }
+    });
+
+    // Faculty login - still requires password
+    facultyLoginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const username = facultyUsernameInput.value.trim();
+      const password = facultyPasswordInput.value.trim();
+      
+      if (!username || !password) {
+        alert('Please enter both username and password');
+        return;
+      }
+      
+      // Simple authentication
+      if (password === 'password') {
+        loginPage.style.display = 'none';
+        facultyPortal.style.display = 'block';
+        initializeFacultyPortal(username);
+      } else {
+        alert('Invalid credentials. Use "password" as password for demo.');
+      }
+    });
+
+    // Initialize Student Portal
+    function initializeStudentPortal(fullName, studentNumber) {
+      // Extract initials for avatar
+      const nameParts = fullName.split(' ');
+      const initials = nameParts.length >= 2 
+        ? (nameParts[0].charAt(0) + nameParts[nameParts.length - 1].charAt(0)).toUpperCase()
+        : fullName.substring(0, 2).toUpperCase();
+      
+      // Update student portal with user data
+      document.getElementById('studentAvatar').textContent = initials;
+      document.getElementById('studentCardAvatar').textContent = initials;
+      document.getElementById('studentName').textContent = fullName;
+      document.getElementById('studentCardName').textContent = fullName;
+      document.getElementById('studentID').textContent = `ID: ${studentNumber}`;
+      document.getElementById('studentCardID').textContent = `ID: ${studentNumber}`;
+      
+      // Set up student portal functionality
+      setupStudentPortal();
+    }
+
+    // Initialize Faculty Portal
+    function initializeFacultyPortal(username) {
+      const initials = username.substring(0, 2).toUpperCase();
+      
+      document.getElementById('facultyAvatar').textContent = initials;
+      document.getElementById('facultyCardAvatar').textContent = initials;
+      
+      setupFacultyPortal();
+    }
+
+    // Setup Student Portal
+    function setupStudentPortal() {
+      const logoutBtn = document.getElementById('studentLogoutBtn');
+      const themeToggle = document.getElementById('studentThemeToggle');
+      const themeInfo = document.getElementById('studentThemeInfo');
+      const menuButtons = document.querySelectorAll('#studentMenu button');
+      
+      // Navigation
+      menuButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const section = this.getAttribute('data-section');
+          
+          // Hide all sections
+          document.querySelectorAll('#studentContentArea > div').forEach(div => {
+            div.style.display = 'none';
+          });
+          
+          // Show selected section
+          if (section === 'dashboard') {
+            document.getElementById('studentDashboardSection').style.display = 'grid';
+          } else if (section === 'classes') {
+            document.getElementById('studentDashboardSection').style.display = 'grid';
+          } else {
+            // For other sections, show dashboard for now
+            document.getElementById('studentDashboardSection').style.display = 'grid';
+          }
+          
+          // Update active button
+          menuButtons.forEach(btn => btn.classList.remove('active'));
+          this.classList.add('active');
+          
+          // Update page title
+          document.getElementById('studentPageTitle').textContent = 
+            section.charAt(0).toUpperCase() + section.slice(1);
+        });
+      });
+      
+      // Classroom navigation
+      document.querySelectorAll('.classroom-nav-item').forEach(item => {
+        item.addEventListener('click', function() {
+          const tab = this.getAttribute('data-tab');
+          
+          // Update active nav item
+          document.querySelectorAll('.classroom-nav-item').forEach(navItem => {
+            navItem.classList.remove('active');
+          });
+          this.classList.add('active');
+          
+          // Show selected tab
+          document.querySelectorAll('.class-tab').forEach(tabElement => {
+            tabElement.style.display = 'none';
+          });
+          document.getElementById('student' + tab.charAt(0).toUpperCase() + tab.slice(1) + 'Tab').style.display = 'block';
+        });
+      });
+      
+      // Logout functionality
+      logoutBtn.addEventListener('click', () => {
+        studentPortal.style.display = 'none';
+        loginPage.style.display = 'flex';
+        studentFullNameInput.value = '';
+        studentNumberInput.value = '';
+      });
+      
+      // Theme toggle
+      themeToggle.addEventListener('click', () => {
+        const nowDark = document.body.classList.contains('theme-dark');
+        if (nowDark) {
+          document.body.classList.remove('theme-dark');
+          document.body.classList.add('theme-light');
+          themeInfo.textContent = 'Light Mode';
+        } else {
+          document.body.classList.remove('theme-light');
+          document.body.classList.add('theme-dark');
+          themeInfo.textContent = 'Dark Mode';
+        }
+      });
+      
+      // Clock
+      function updateStudentClock() {
+        const now = new Date();
+        const hh = String(now.getHours()).padStart(2,'0');
+        const mm = String(now.getMinutes()).padStart(2,'0');
+        const ss = String(now.getSeconds()).padStart(2,'0');
+        const d = now.toLocaleDateString();
+        document.getElementById('studentClock').textContent = `${hh}:${mm}:${ss} • ${d}`;
+      }
+      updateStudentClock();
+      setInterval(updateStudentClock, 1000);
+    }
+
+    // Setup Faculty Portal
+    function setupFacultyPortal() {
+      const logoutBtn = document.getElementById('facultyLogoutBtn');
+      const themeToggle = document.getElementById('facultyThemeToggle');
+      const themeInfo = document.getElementById('facultyThemeInfo');
+      const menuButtons = document.querySelectorAll('#facultyMenu button');
+      
+      // Navigation
+      menuButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const section = this.getAttribute('data-section');
+          
+          // For now, just update active button (all content is in dashboard)
+          menuButtons.forEach(btn => btn.classList.remove('active'));
+          this.classList.add('active');
+          
+          // Update page title
+          document.getElementById('facultyPageTitle').textContent = 
+            section.charAt(0).toUpperCase() + section.slice(1);
+        });
+      });
+
+      // Faculty classroom navigation
+      document.querySelectorAll('.faculty-classroom-nav-item').forEach(item => {
+        item.addEventListener('click', function() {
+          const tab = this.getAttribute('data-tab');
+          
+          // Update active nav item
+          document.querySelectorAll('.faculty-classroom-nav-item').forEach(navItem => {
+            navItem.classList.remove('active');
+          });
+          this.classList.add('active');
+          
+          // Show selected tab
+          document.querySelectorAll('.class-tab').forEach(tabElement => {
+            tabElement.style.display = 'none';
+          });
+          document.getElementById('faculty' + tab.charAt(0).toUpperCase() + tab.slice(1) + 'Tab').style.display = 'block';
+        });
+      });
+      
+      logoutBtn.addEventListener('click', () => {
+        facultyPortal.style.display = 'none';
+        loginPage.style.display = 'flex';
+        facultyUsernameInput.value = '';
+        facultyPasswordInput.value = '';
+      });
+      
+      themeToggle.addEventListener('click', () => {
+        const nowDark = document.body.classList.contains('theme-dark');
+        if (nowDark) {
+          document.body.classList.remove('theme-dark');
+          document.body.classList.add('theme-light');
+          themeInfo.textContent = 'Light Mode';
+        } else {
+          document.body.classList.remove('theme-light');
+          document.body.classList.add('theme-dark');
+          themeInfo.textContent = 'Dark Mode';
+        }
+      });
+      
+      function updateFacultyClock() {
+        const now = new Date();
+        const hh = String(now.getHours()).padStart(2,'0');
+        const mm = String(now.getMinutes()).padStart(2,'0');
+        const ss = String(now.getSeconds()).padStart(2,'0');
+        const d = now.toLocaleDateString();
+        document.getElementById('facultyClock').textContent = `${hh}:${mm}:${ss} • ${d}`;
+      }
+      updateFacultyClock();
+      setInterval(updateFacultyClock, 1000);
+    }
+
+    // Open Student Classroom
+    function openStudentClassroom(courseCode) {
+      document.getElementById('studentDashboardSection').style.display = 'none';
+      document.getElementById('studentClassroomSection').style.display = 'grid';
+      
+      // Update classroom header
+      const courseNames = {
+        'CS301': 'Data Structures',
+        'MATH202': 'Calculus II',
+        'ENG201': 'English Literature',
+        'PHY101': 'Physics I'
+      };
+      
+      document.getElementById('studentClassName').textContent = courseNames[courseCode] + ' - ' + courseCode;
+      document.getElementById('studentPageTitle').textContent = courseNames[courseCode];
+    }
+
+    // Open Faculty Classroom
+    function openFacultyClassroom(courseCode) {
+      document.querySelectorAll('#facultyContentArea > .grid')[0].style.display = 'none';
+      document.getElementById('facultyClassroomSection').style.display = 'grid';
+      
+      // Update classroom header
+      const courseNames = {
+        'CS301': 'Data Structures',
+        'CS401': 'Algorithms',
+        'CS501': 'Advanced Databases',
+        'CS601': 'Machine Learning'
+      };
+      
+      document.getElementById('facultyClassName').textContent = courseNames[courseCode] + ' - ' + courseCode;
+      document.getElementById('facultyPageTitle').textContent = courseNames[courseCode];
+    }
+
+    // Demo accounts information
+    console.log('Demo Login Information:');
+    console.log('Students: Enter any full name and student number');
+    console.log('Faculty: Use any username with password "password"');
+  </script>
+</body>
+</html>
