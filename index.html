@@ -256,12 +256,27 @@
     .sidebar.collapsed .profile .info { display:none; }
 
     /* Menu with icons + labels */
-    .menu { display:flex; flex-direction:column; gap:6px; margin-top:6px; }
+    .menu { 
+      display:flex; 
+      flex-direction:column; 
+      gap:6px; 
+      margin-top:6px; 
+      flex: 1; /* Added to take remaining space */
+    }
     .menu button {
-      display:flex; align-items:center; gap:10px; padding:10px; border-radius:8px; border:none;
-      background:transparent; cursor:pointer; font-weight:700; text-align:left;
+      display:flex; 
+      align-items:center; 
+      gap:10px; 
+      padding:10px; 
+      border-radius:8px; 
+      border:none;
+      background:transparent; 
+      cursor:pointer; 
+      font-weight:700; 
+      text-align:left;
       transition: background 0.2s;
       color: #374151;
+      width: 100%; /* Added to ensure full width */
     }
     body.theme-dark .menu button {
       color: #d1d5db;
@@ -500,6 +515,7 @@
       background: rgba(220, 38, 38, 0.1);
       color: #dc2626;
       border: 1px solid rgba(220, 38, 38, 0.2);
+      width: 100%; /* Added to ensure full width */
     }
     body.theme-dark .logout-btn {
       background: rgba(220, 38, 38, 0.2);
@@ -819,6 +835,13 @@
       background: #374151;
       border: 1px solid #4b5563;
       color: #f3f4f6;
+    }
+
+    /* Portal Layout */
+    #studentPortal, #facultyPortal {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
     }
   </style>
 </head>
@@ -1541,7 +1564,7 @@
       // Simple validation - just check that fields are filled
       if (fullName && studentNumber) {
         loginPage.style.display = 'none';
-        studentPortal.style.display = 'block';
+        studentPortal.style.display = 'flex';
         initializeStudentPortal(fullName, studentNumber);
       }
     });
@@ -1561,7 +1584,7 @@
       // Simple authentication
       if (password === 'password') {
         loginPage.style.display = 'none';
-        facultyPortal.style.display = 'block';
+        facultyPortal.style.display = 'flex';
         initializeFacultyPortal(username);
       } else {
         alert('Invalid credentials. Use "password" as password for demo.');
