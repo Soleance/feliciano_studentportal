@@ -17,6 +17,13 @@
       background-color: #f9fafb;
       color: #111827;
       line-height: 1.5;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background-color: #111827;
+      color: #f9fafb;
     }
     
     /* Login Page */
@@ -39,6 +46,10 @@
       background: white;
     }
     
+    .dark-mode .login-wrapper {
+      background: #1f2937;
+    }
+    
     .login-section {
       flex: 1;
       padding: 40px;
@@ -52,8 +63,17 @@
       border-right: 1px solid #e5e7eb;
     }
     
+    .dark-mode .student-login {
+      background: #374151;
+      border-right: 1px solid #4b5563;
+    }
+    
     .faculty-login {
       background: #ffffff;
+    }
+    
+    .dark-mode .faculty-login {
+      background: #374151;
     }
     
     .login-icon {
@@ -72,9 +92,19 @@
       color: #1e3a8a;
     }
     
+    .dark-mode .student-icon {
+      background: #1e3a8a;
+      color: #dbeafe;
+    }
+    
     .faculty-icon {
       background: #fef2f2;
       color: #dc2626;
+    }
+    
+    .dark-mode .faculty-icon {
+      background: #dc2626;
+      color: #fef2f2;
     }
     
     .login-title {
@@ -88,8 +118,16 @@
       color: #1e3a8a;
     }
     
+    .dark-mode .student-title {
+      color: #93c5fd;
+    }
+    
     .faculty-title {
       color: #dc2626;
+    }
+    
+    .dark-mode .faculty-title {
+      color: #fca5a5;
     }
     
     .login-subtitle {
@@ -97,6 +135,10 @@
       margin-bottom: 30px;
       color: #6b7280;
       font-size: 14px;
+    }
+    
+    .dark-mode .login-subtitle {
+      color: #9ca3af;
     }
     
     .login-form {
@@ -120,8 +162,16 @@
       color: #1e3a8a;
     }
     
+    .dark-mode .student-label {
+      color: #93c5fd;
+    }
+    
     .faculty-label {
       color: #dc2626;
+    }
+    
+    .dark-mode .faculty-label {
+      color: #fca5a5;
     }
     
     .form-input {
@@ -133,6 +183,12 @@
       color: #111827;
     }
     
+    .dark-mode .form-input {
+      background: #4b5563;
+      border-color: #6b7280;
+      color: #f9fafb;
+    }
+    
     .form-input:focus {
       outline: none;
     }
@@ -142,9 +198,19 @@
       box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
     }
     
+    .dark-mode .student-input:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+    }
+    
     .faculty-input:focus {
       border-color: #ef4444;
       box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+    }
+    
+    .dark-mode .faculty-input:focus {
+      border-color: #ef4444;
+      box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.5);
     }
     
     .login-btn {
@@ -183,6 +249,10 @@
       color: #6b7280;
     }
     
+    .dark-mode .create-account {
+      color: #9ca3af;
+    }
+    
     .create-link {
       color: #3b82f6;
       text-decoration: none;
@@ -215,6 +285,11 @@
       padding: 18px;
       transition: all 0.3s ease;
       z-index: 1000;
+    }
+    
+    .dark-mode .sidebar {
+      background: #1f2937;
+      border-right: 1px solid #374151;
     }
     
     .sidebar.collapsed {
@@ -267,8 +342,16 @@
       color: #1e3a8a;
     }
     
+    .dark-mode .student-profile h3 {
+      color: #93c5fd;
+    }
+    
     .faculty-profile h3 {
       color: #dc2626;
+    }
+    
+    .dark-mode .faculty-profile h3 {
+      color: #fca5a5;
     }
     
     .profile p {
@@ -276,6 +359,10 @@
       opacity: 0.95;
       margin-top: 4px;
       color: #4b5563;
+    }
+    
+    .dark-mode .profile p {
+      color: #9ca3af;
     }
     
     .sidebar.collapsed .profile .avatar {
@@ -309,11 +396,18 @@
       text-align: left;
       transition: background 0.2s;
       color: #374151;
-      width: 100%;
+    }
+    
+    .dark-mode .menu button {
+      color: #d1d5db;
     }
     
     .menu button:hover {
       background: #e5e7eb;
+    }
+    
+    .dark-mode .menu button:hover {
+      background: #4b5563;
     }
     
     .menu button.active {
@@ -321,9 +415,19 @@
       color: #1e3a8a;
     }
     
+    .dark-mode .menu button.active {
+      background: #1e3a8a;
+      color: #dbeafe;
+    }
+    
     .faculty-menu button.active {
       background: #fef2f2;
       color: #dc2626;
+    }
+    
+    .dark-mode .faculty-menu button.active {
+      background: #dc2626;
+      color: #fef2f2;
     }
     
     .menu button .icon {
@@ -337,8 +441,16 @@
       color: #1e3a8a;
     }
     
+    .dark-mode .student-menu .icon {
+      color: #93c5fd;
+    }
+    
     .faculty-menu .icon {
       color: #dc2626;
+    }
+    
+    .dark-mode .faculty-menu .icon {
+      color: #fca5a5;
     }
     
     .sidebar.collapsed .menu button {
@@ -361,6 +473,11 @@
       font-weight: 700;
     }
     
+    .dark-mode .logout-btn {
+      background: rgba(220, 38, 38, 0.3);
+      border: 1px solid rgba(220, 38, 38, 0.5);
+    }
+    
     /* Main Content */
     .main {
       flex: 1;
@@ -369,6 +486,10 @@
       min-height: 100vh;
       background: #f9fafb;
       transition: all 0.3s ease;
+    }
+    
+    .dark-mode .main {
+      background: #111827;
     }
     
     .topbar {
@@ -388,14 +509,26 @@
       color: #1e3a8a;
     }
     
+    .dark-mode .student-title {
+      color: #93c5fd;
+    }
+    
     .faculty-title {
       color: #dc2626;
+    }
+    
+    .dark-mode .faculty-title {
+      color: #fca5a5;
     }
     
     .clock {
       font-size: 14px;
       opacity: 0.95;
       color: #6b7280;
+    }
+    
+    .dark-mode .clock {
+      color: #9ca3af;
     }
     
     .btn {
@@ -406,6 +539,12 @@
       cursor: pointer;
       font-weight: 700;
       color: #111827;
+    }
+    
+    .dark-mode .btn {
+      background: #374151;
+      border-color: #4b5563;
+      color: #f9fafb;
     }
     
     /* Collapse Button */
@@ -422,6 +561,12 @@
       font-weight: 700;
       color: #111827;
       transition: left 0.3s ease;
+    }
+    
+    .dark-mode .collapseBtn {
+      background: #374151;
+      border-color: #4b5563;
+      color: #f9fafb;
     }
     
     .sidebar.collapsed ~ .main .collapseBtn {
@@ -452,6 +597,12 @@
       color: #111827;
     }
     
+    .dark-mode .card {
+      background: #1f2937;
+      border: 1px solid #374151;
+      color: #f9fafb;
+    }
+    
     .col-4 {
       grid-column: span 4;
     }
@@ -473,6 +624,10 @@
       border-bottom: 1px solid #e5e7eb;
     }
     
+    .dark-mode .card-header {
+      border-bottom: 1px solid #374151;
+    }
+    
     .card-title {
       font-weight: 800;
       font-size: 16px;
@@ -482,8 +637,16 @@
       color: #1e3a8a;
     }
     
+    .dark-mode .student-card .card-title {
+      color: #93c5fd;
+    }
+    
     .faculty-card .card-title {
       color: #dc2626;
+    }
+    
+    .dark-mode .faculty-card .card-title {
+      color: #fca5a5;
     }
     
     .action-btn {
@@ -499,8 +662,16 @@
       color: #1e3a8a;
     }
     
+    .dark-mode .student-action {
+      color: #93c5fd;
+    }
+    
     .faculty-action {
       color: #dc2626;
+    }
+    
+    .dark-mode .faculty-action {
+      color: #fca5a5;
     }
     
     .action-btn:hover {
@@ -510,6 +681,10 @@
     .muted {
       opacity: 0.7;
       color: #6b7280;
+    }
+    
+    .dark-mode .muted {
+      color: #9ca3af;
     }
     
     /* Stats */
@@ -527,6 +702,10 @@
       text-align: center;
     }
     
+    .dark-mode .stat-card {
+      background: #374151;
+    }
+    
     .stat-value {
       font-size: 20px;
       font-weight: 800;
@@ -537,8 +716,16 @@
       color: #1e3a8a;
     }
     
+    .dark-mode .student-stat .stat-value {
+      color: #93c5fd;
+    }
+    
     .faculty-stat .stat-value {
       color: #dc2626;
+    }
+    
+    .dark-mode .faculty-stat .stat-value {
+      color: #fca5a5;
     }
     
     .stat-label {
@@ -552,6 +739,10 @@
       border-radius: 3px;
       margin: 8px 0;
       overflow: hidden;
+    }
+    
+    .dark-mode .progress-bar {
+      background: #4b5563;
     }
     
     .progress-fill {
@@ -583,12 +774,21 @@
       cursor: pointer;
     }
     
+    .dark-mode .course-card {
+      background: #374151;
+      border: 1px solid #4b5563;
+    }
+    
     /* Schedule */
     .schedule-item {
       display: flex;
       justify-content: space-between;
       padding: 8px 0;
       border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .dark-mode .schedule-item {
+      border-bottom: 1px solid #374151;
     }
     
     .schedule-time {
@@ -616,6 +816,10 @@
       border-bottom: 1px solid #e5e7eb;
     }
     
+    .dark-mode .grade-item {
+      border-bottom: 1px solid #374151;
+    }
+    
     .grade-course {
       font-weight: 600;
     }
@@ -637,14 +841,29 @@
       color: #166534;
     }
     
+    .dark-mode .grade-a {
+      background: #166534;
+      color: #dcfce7;
+    }
+    
     .grade-b {
       background: #dbeafe;
       color: #1e40af;
     }
     
+    .dark-mode .grade-b {
+      background: #1e40af;
+      color: #dbeafe;
+    }
+    
     .grade-c {
       background: #fef3c7;
       color: #92400e;
+    }
+    
+    .dark-mode .grade-c {
+      background: #92400e;
+      color: #fef3c7;
     }
     
     /* Calendar */
@@ -663,6 +882,11 @@
       background: white;
     }
     
+    .dark-mode .calendar-day {
+      background: #1f2937;
+      border: 1px solid #374151;
+    }
+    
     .calendar-day-header {
       font-weight: 600;
       margin-bottom: 8px;
@@ -677,12 +901,25 @@
       font-size: 12px;
     }
     
+    .dark-mode .calendar-event {
+      background: #1e3a8a;
+    }
+    
     .faculty-calendar-event {
       background: #fef2f2;
     }
     
+    .dark-mode .faculty-calendar-event {
+      background: #dc2626;
+    }
+    
     .today {
       background: #eff6ff;
+      border-color: #3b82f6;
+    }
+    
+    .dark-mode .today {
+      background: #1e3a8a;
       border-color: #3b82f6;
     }
     
@@ -696,6 +933,10 @@
       .student-login {
         border-right: none;
         border-bottom: 1px solid #e5e7eb;
+      }
+      
+      .dark-mode .student-login {
+        border-bottom: 1px solid #4b5563;
       }
       
       .sidebar {
@@ -1465,15 +1706,11 @@
       
       // Theme toggle
       themeToggle.addEventListener('click', () => {
-        const nowDark = document.body.classList.contains('theme-dark');
-        if (nowDark) {
-          document.body.classList.remove('theme-dark');
-          document.body.classList.add('theme-light');
-          themeInfo.textContent = 'Light Mode';
-        } else {
-          document.body.classList.remove('theme-light');
-          document.body.classList.add('theme-dark');
+        document.body.classList.toggle('dark-mode');
+        if (document.body.classList.contains('dark-mode')) {
           themeInfo.textContent = 'Dark Mode';
+        } else {
+          themeInfo.textContent = 'Light Mode';
         }
       });
       
@@ -1561,15 +1798,11 @@
       });
       
       themeToggle.addEventListener('click', () => {
-        const nowDark = document.body.classList.contains('theme-dark');
-        if (nowDark) {
-          document.body.classList.remove('theme-dark');
-          document.body.classList.add('theme-light');
-          themeInfo.textContent = 'Light Mode';
-        } else {
-          document.body.classList.remove('theme-light');
-          document.body.classList.add('theme-dark');
+        document.body.classList.toggle('dark-mode');
+        if (document.body.classList.contains('dark-mode')) {
           themeInfo.textContent = 'Dark Mode';
+        } else {
+          themeInfo.textContent = 'Light Mode';
         }
       });
       
