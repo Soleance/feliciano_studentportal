@@ -207,7 +207,8 @@
       gap: 12px;
       background: #f8fafc;
       border-right: 1px solid #e5e7eb;
-      transition: width 0.3s ease;
+      transition: all 0.3s ease;
+      z-index: 1000;
     }
     body.theme-dark .sidebar { 
       background: #1f2937; 
@@ -262,7 +263,7 @@
       flex-direction:column; 
       gap:6px; 
       margin-top:6px; 
-      flex: 1; /* Added to take remaining space */
+      flex: 1;
     }
     .menu button {
       display:flex; 
@@ -277,7 +278,7 @@
       text-align:left;
       transition: background 0.2s;
       color: #374151;
-      width: 100%; /* Added to ensure full width */
+      width: 100%;
     }
     body.theme-dark .menu button {
       color: #d1d5db;
@@ -328,9 +329,23 @@
     .sidebar.collapsed .menu .label { display:none; }
 
     /* Main area */
-    .main { flex:1; padding:24px; overflow:auto; min-height:100vh; background: #f9fafb; transition: margin-left 0.3s ease; }
+    .main { 
+      flex:1; 
+      padding:24px; 
+      overflow:auto; 
+      min-height:100vh; 
+      background: #f9fafb; 
+      transition: all 0.3s ease;
+    }
     body.theme-dark .main { background: #111827; }
-    .topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; gap:12px; }
+    .topbar { 
+      display:flex; 
+      justify-content:space-between; 
+      align-items:center; 
+      margin-bottom:18px; 
+      gap:12px; 
+      flex-wrap: wrap;
+    }
     .title { font-weight:800; font-size:20px; }
     .student-title { color: #1e3a8a; }
     .faculty-title { color: #dc2626; }
@@ -354,7 +369,11 @@
     }
 
     /* Grid & cards */
-    .grid { display:grid; grid-template-columns: repeat(12,1fr); gap:16px; }
+    .grid { 
+      display:grid; 
+      grid-template-columns: repeat(12,1fr); 
+      gap:16px; 
+    }
     .card { 
       background: #ffffff; 
       padding:14px; 
@@ -430,9 +449,10 @@
     }
 
     /* Mobile: sidebar overlays and hides by default */
-    @media (max-width:900px) {
+    @media (max-width: 900px) {
       .login-wrapper {
         flex-direction: column;
+        max-width: 100%;
       }
       .student-login {
         border-right: none;
@@ -440,18 +460,60 @@
       }
       .sidebar { 
         position: fixed; 
-        left: 0; 
+        left: -280px; 
         top:0; 
         height: 100vh; 
         z-index: 1200; 
-        display:none; 
-        width:240px; 
+        width:280px; 
         box-shadow: 2px 0 12px rgba(0,0,0,0.2); 
+        transition: left 0.3s ease;
       }
-      body.show-sidebar .sidebar { display:flex; }
-      /* Ensure collapsed state for mobile keeps icons centered */
-      .sidebar.collapsed { width:240px; } /* do not shrink on mobile */
-      .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9 { grid-column: span 12; }
+      .sidebar.mobile-open { 
+        left: 0;
+      }
+      .sidebar.collapsed { 
+        width: 280px; 
+        left: -280px;
+      }
+      .sidebar.collapsed.mobile-open {
+        left: 0;
+      }
+      .collapseBtn {
+        display: block;
+      }
+      .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9 { 
+        grid-column: span 12; 
+      }
+      .grid {
+        gap: 12px;
+      }
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      .stats-container {
+        flex-direction: column;
+      }
+      .course-grid {
+        grid-template-columns: 1fr !important;
+      }
+      .people-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
+      }
+      .calendar-grid {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+      .calendar-day {
+        min-height: 80px;
+      }
+      .main {
+        padding: 16px;
+      }
+      .card {
+        padding: 12px;
+      }
     }
 
     /* Additional styles */
@@ -520,7 +582,7 @@
       background: rgba(220, 38, 38, 0.1);
       color: #dc2626;
       border: 1px solid rgba(220, 38, 38, 0.2);
-      width: 100%; /* Added to ensure full width */
+      width: 100%;
     }
     body.theme-dark .logout-btn {
       background: rgba(220, 38, 38, 0.2);
@@ -682,6 +744,58 @@
       height: 100vh;
       overflow: hidden;
     }
+
+    /* Mobile overlay for sidebar */
+    .mobile-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1100;
+    }
+    
+    @media (max-width: 900px) {
+      .mobile-overlay.active {
+        display: block;
+      }
+    }
+
+    /* Mobile-specific adjustments */
+    @media (max-width: 600px) {
+      .login-section {
+        padding: 20px;
+      }
+      .login-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+      }
+      .login-title {
+        font-size: 20px;
+      }
+      .form-input {
+        padding: 10px;
+      }
+      .login-btn {
+        padding: 10px;
+      }
+      .course-card {
+        padding: 16px !important;
+      }
+      .schedule-time, .schedule-location {
+        width: auto;
+        min-width: 70px;
+      }
+      .calendar-grid {
+        grid-template-columns: 1fr;
+      }
+      .calendar-day {
+        min-height: auto;
+      }
+    }
   </style>
 </head>
 <body class="theme-light">
@@ -738,6 +852,7 @@
 
   <!-- Student Portal -->
   <div id="studentPortal">
+    <div class="mobile-overlay" id="studentOverlay"></div>
     <button class="collapseBtn" id="studentCollapseBtn">☰</button>
 
     <aside class="sidebar" id="studentSidebar">
@@ -851,18 +966,6 @@
                   <div class="muted">Dr. Smith</div>
                   <div class="muted" style="margin-top: 8px;">1 new announcement • Quiz tomorrow</div>
                 </div>
-                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openStudentClassroom('ENG201')">
-                  <div style="font-weight: 800; font-size: 18px; color: #1e3a8a;">ENG201</div>
-                  <div style="font-size: 16px; margin-bottom: 8px;">English Literature</div>
-                  <div class="muted">Prof. Davis</div>
-                  <div class="muted" style="margin-top: 8px;">Essay due Friday</div>
-                </div>
-                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openStudentClassroom('PHY101')">
-                  <div style="font-weight: 800; font-size: 18px; color: #1e3a8a;">PHY101</div>
-                  <div style="font-size: 16px; margin-bottom: 8px;">Physics I</div>
-                  <div class="muted">Dr. Wilson</div>
-                  <div class="muted" style="margin-top: 8px;">Lab report due next week</div>
-                </div>
               </div>
             </div>
           </div>
@@ -890,20 +993,6 @@
                   <div class="muted">Dr. Smith</div>
                   <div class="muted" style="margin-top: 8px;">Tue/Thu 11:00 AM-12:30 PM</div>
                   <div class="muted">Room: Math Building 205</div>
-                </div>
-                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openStudentClassroom('ENG201')">
-                  <div style="font-weight: 800; font-size: 18px; color: #1e3a8a;">ENG201</div>
-                  <div style="font-size: 16px; margin-bottom: 8px;">English Literature</div>
-                  <div class="muted">Prof. Davis</div>
-                  <div class="muted" style="margin-top: 8px;">Mon/Wed 2:00-3:30 PM</div>
-                  <div class="muted">Room: Humanities Building 102</div>
-                </div>
-                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openStudentClassroom('PHY101')">
-                  <div style="font-weight: 800; font-size: 18px; color: #1e3a8a;">PHY101</div>
-                  <div style="font-size: 16px; margin-bottom: 8px;">Physics I</div>
-                  <div class="muted">Dr. Wilson</div>
-                  <div class="muted" style="margin-top: 8px;">Tue/Thu 1:00-2:30 PM</div>
-                  <div class="muted">Room: Science Building 301</div>
                 </div>
               </div>
             </div>
@@ -933,16 +1022,6 @@
                 <div class="schedule-course">English Literature (ENG201)</div>
                 <div class="schedule-location">Humanities 102</div>
               </div>
-              <div class="schedule-item">
-                <div class="schedule-time">1:00 PM</div>
-                <div class="schedule-course">Physics I (PHY101)</div>
-                <div class="schedule-location">Science Building 301</div>
-              </div>
-              <div class="schedule-item">
-                <div class="schedule-time">3:30 PM</div>
-                <div class="schedule-course">Study Group - Data Structures</div>
-                <div class="schedule-location">Library Study Room 3</div>
-              </div>
             </div>
           </div>
         </div>
@@ -970,16 +1049,6 @@
                 <div class="grade-score">85%</div>
                 <div class="grade-letter grade-b">B</div>
               </div>
-              <div class="grade-item">
-                <div class="grade-course">Physics I (PHY101)</div>
-                <div class="grade-score">79%</div>
-                <div class="grade-letter grade-c">C+</div>
-              </div>
-              <div class="grade-item">
-                <div class="grade-course">Computer Networks (CS302)</div>
-                <div class="grade-score">94%</div>
-                <div class="grade-letter grade-a">A</div>
-              </div>
             </div>
           </div>
         </div>
@@ -1003,28 +1072,10 @@
                   <div class="calendar-event">Calculus II 11:00 AM</div>
                   <div class="calendar-event">Physics I 1:00 PM</div>
                 </div>
-                <div class="calendar-day">
+                <div class="calendar-day today">
                   <div class="calendar-day-header">Wed</div>
                   <div class="calendar-event">Data Structures 9:00 AM</div>
                   <div class="calendar-event">English Lit 2:00 PM</div>
-                </div>
-                <div class="calendar-day">
-                  <div class="calendar-day-header">Thu</div>
-                  <div class="calendar-event">Calculus II 11:00 AM</div>
-                  <div class="calendar-event">Physics I 1:00 PM</div>
-                </div>
-                <div class="calendar-day today">
-                  <div class="calendar-day-header">Fri</div>
-                  <div class="calendar-event">Data Structures 9:00 AM</div>
-                  <div class="calendar-event">Study Group 3:30 PM</div>
-                </div>
-                <div class="calendar-day">
-                  <div class="calendar-day-header">Sat</div>
-                  <div class="calendar-event">Assignment Due: Physics Lab</div>
-                </div>
-                <div class="calendar-day">
-                  <div class="calendar-day-header">Sun</div>
-                  <div class="calendar-event">No classes</div>
                 </div>
               </div>
             </div>
@@ -1036,6 +1087,7 @@
 
   <!-- Faculty Portal -->
   <div id="facultyPortal">
+    <div class="mobile-overlay" id="facultyOverlay"></div>
     <button class="collapseBtn" id="facultyCollapseBtn">☰</button>
 
     <aside class="sidebar" id="facultySidebar">
@@ -1117,10 +1169,6 @@
                   <div class="stat-value" id="facultyPendingGrading">23</div>
                   <div class="stat-label">Pending Grading</div>
                 </div>
-                <div class="stat-card faculty-stat">
-                  <div class="stat-value" id="facultyOfficeHours">12</div>
-                  <div class="stat-label">Weekly Hours</div>
-                </div>
               </div>
               <div class="progress-bar">
                 <div class="progress-fill faculty-progress" style="width: 75%"></div>
@@ -1145,18 +1193,6 @@
                   <div style="font-size: 16px; margin-bottom: 8px;">Algorithms</div>
                   <div class="muted">38 students • Fall 2025</div>
                   <div class="muted" style="margin-top: 8px;">3 assignments • All graded</div>
-                </div>
-                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openFacultyClassroom('CS501')">
-                  <div style="font-weight: 800; font-size: 18px; color: #dc2626;">CS501</div>
-                  <div style="font-size: 16px; margin-bottom: 8px;">Advanced Databases</div>
-                  <div class="muted">24 students • Fall 2025</div>
-                  <div class="muted" style="margin-top: 8px;">Project phase 2 starting</div>
-                </div>
-                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openFacultyClassroom('CS601')">
-                  <div style="font-weight: 800; font-size: 18px; color: #dc2626;">CS601</div>
-                  <div style="font-size: 16px; margin-bottom: 8px;">Machine Learning</div>
-                  <div class="muted">18 students • Fall 2025</div>
-                  <div class="muted" style="margin-top: 8px;">Research papers discussion</div>
                 </div>
               </div>
             </div>
@@ -1185,20 +1221,6 @@
                   <div class="muted">38 students • Fall 2025</div>
                   <div class="muted" style="margin-top: 8px;">Tue/Thu 10:00-11:30 AM</div>
                   <div class="muted">Room: CS Building 205</div>
-                </div>
-                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openFacultyClassroom('CS501')">
-                  <div style="font-weight: 800; font-size: 18px; color: #dc2626;">CS501</div>
-                  <div style="font-size: 16px; margin-bottom: 8px;">Advanced Databases</div>
-                  <div class="muted">24 students • Fall 2025</div>
-                  <div class="muted" style="margin-top: 8px;">Mon/Wed 1:00-2:30 PM</div>
-                  <div class="muted">Room: CS Building 302</div>
-                </div>
-                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openFacultyClassroom('CS601')">
-                  <div style="font-weight: 800; font-size: 18px; color: #dc2626;">CS601</div>
-                  <div style="font-size: 16px; margin-bottom: 8px;">Machine Learning</div>
-                  <div class="muted">18 students • Fall 2025</div>
-                  <div class="muted" style="margin-top: 8px;">Tue/Thu 2:00-3:30 PM</div>
-                  <div class="muted">Room: CS Building 401</div>
                 </div>
               </div>
             </div>
@@ -1232,24 +1254,6 @@
                     <button class="btn faculty-btn">Continue Grading</button>
                   </div>
                 </div>
-                <div class="student-work-card" style="background: white; border-radius: 8px; border: 1px solid #e5e7eb; padding: 16px;">
-                  <div class="assignment-title">Project Phase 1</div>
-                  <div class="assignment-due">Due: Oct 10, 11:59 PM</div>
-                  <div class="muted">CS501 - Advanced Databases</div>
-                  <div class="muted">24 submissions • 18 graded</div>
-                  <div class="assignment-actions" style="display: flex; gap: 12px; margin-top: 12px;">
-                    <button class="btn faculty-btn">Finish Grading</button>
-                  </div>
-                </div>
-                <div class="student-work-card" style="background: white; border-radius: 8px; border: 1px solid #e5e7eb; padding: 16px;">
-                  <div class="assignment-title">Research Paper Review</div>
-                  <div class="assignment-due">Due: Oct 5, 11:59 PM</div>
-                  <div class="muted">CS601 - Machine Learning</div>
-                  <div class="muted">18 submissions • All graded</div>
-                  <div class="assignment-actions" style="display: flex; gap: 12px; margin-top: 12px;">
-                    <button class="btn">View Grades</button>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -1268,38 +1272,16 @@
                   <div class="calendar-day-header">Mon</div>
                   <div class="calendar-event faculty-calendar-event">Data Structures 9:00 AM</div>
                   <div class="calendar-event faculty-calendar-event">Advanced Databases 1:00 PM</div>
-                  <div class="calendar-event faculty-calendar-event">Office Hours 3:00-5:00 PM</div>
                 </div>
                 <div class="calendar-day">
                   <div class="calendar-day-header">Tue</div>
                   <div class="calendar-event faculty-calendar-event">Algorithms 10:00 AM</div>
                   <div class="calendar-event faculty-calendar-event">Machine Learning 2:00 PM</div>
-                  <div class="calendar-event faculty-calendar-event">Department Meeting 4:00 PM</div>
                 </div>
-                <div class="calendar-day">
+                <div class="calendar-day today">
                   <div class="calendar-day-header">Wed</div>
                   <div class="calendar-event faculty-calendar-event">Data Structures 9:00 AM</div>
                   <div class="calendar-event faculty-calendar-event">Advanced Databases 1:00 PM</div>
-                  <div class="calendar-event faculty-calendar-event">Research Group 3:00 PM</div>
-                </div>
-                <div class="calendar-day">
-                  <div class="calendar-day-header">Thu</div>
-                  <div class="calendar-event faculty-calendar-event">Algorithms 10:00 AM</div>
-                  <div class="calendar-event faculty-calendar-event">Machine Learning 2:00 PM</div>
-                  <div class="calendar-event faculty-calendar-event">Office Hours 3:00-5:00 PM</div>
-                </div>
-                <div class="calendar-day today">
-                  <div class="calendar-day-header">Fri</div>
-                  <div class="calendar-event faculty-calendar-event">Data Structures 9:00 AM</div>
-                  <div class="calendar-event faculty-calendar-event">Faculty Senate 1:00 PM</div>
-                </div>
-                <div class="calendar-day">
-                  <div class="calendar-day-header">Sat</div>
-                  <div class="calendar-event faculty-calendar-event">Conference Prep</div>
-                </div>
-                <div class="calendar-day">
-                  <div class="calendar-day-header">Sun</div>
-                  <div class="calendar-event faculty-calendar-event">No scheduled events</div>
                 </div>
               </div>
             </div>
@@ -1401,11 +1383,37 @@
       const menuButtons = document.querySelectorAll('#studentMenu button');
       const collapseBtn = document.getElementById('studentCollapseBtn');
       const sidebar = document.getElementById('studentSidebar');
+      const overlay = document.getElementById('studentOverlay');
+      const isMobile = window.innerWidth <= 900;
+      
+      // Mobile sidebar functionality
+      function toggleMobileSidebar() {
+        sidebar.classList.toggle('mobile-open');
+        overlay.classList.toggle('active');
+      }
       
       // Collapse button functionality
       collapseBtn.addEventListener('click', function() {
-        sidebar.classList.toggle('collapsed');
+        if (isMobile) {
+          toggleMobileSidebar();
+        } else {
+          sidebar.classList.toggle('collapsed');
+        }
       });
+      
+      // Close sidebar when clicking overlay
+      overlay.addEventListener('click', function() {
+        toggleMobileSidebar();
+      });
+      
+      // Close sidebar when clicking menu items on mobile
+      if (isMobile) {
+        menuButtons.forEach(button => {
+          button.addEventListener('click', function() {
+            toggleMobileSidebar();
+          });
+        });
+      }
       
       // Navigation
       menuButtons.forEach(button => {
@@ -1473,11 +1481,37 @@
       const menuButtons = document.querySelectorAll('#facultyMenu button');
       const collapseBtn = document.getElementById('facultyCollapseBtn');
       const sidebar = document.getElementById('facultySidebar');
+      const overlay = document.getElementById('facultyOverlay');
+      const isMobile = window.innerWidth <= 900;
+      
+      // Mobile sidebar functionality
+      function toggleMobileSidebar() {
+        sidebar.classList.toggle('mobile-open');
+        overlay.classList.toggle('active');
+      }
       
       // Collapse button functionality
       collapseBtn.addEventListener('click', function() {
-        sidebar.classList.toggle('collapsed');
+        if (isMobile) {
+          toggleMobileSidebar();
+        } else {
+          sidebar.classList.toggle('collapsed');
+        }
       });
+      
+      // Close sidebar when clicking overlay
+      overlay.addEventListener('click', function() {
+        toggleMobileSidebar();
+      });
+      
+      // Close sidebar when clicking menu items on mobile
+      if (isMobile) {
+        menuButtons.forEach(button => {
+          button.addEventListener('click', function() {
+            toggleMobileSidebar();
+          });
+        });
+      }
       
       // Navigation
       menuButtons.forEach(button => {
@@ -1533,6 +1567,17 @@
       updateFacultyClock();
       setInterval(updateFacultyClock, 1000);
     }
+
+    // Handle window resize
+    window.addEventListener('resize', function() {
+      // If we're on mobile and the sidebar is open, close it when switching to desktop
+      if (window.innerWidth > 900) {
+        document.getElementById('studentSidebar').classList.remove('mobile-open');
+        document.getElementById('studentOverlay').classList.remove('active');
+        document.getElementById('facultySidebar').classList.remove('mobile-open');
+        document.getElementById('facultyOverlay').classList.remove('active');
+      }
+    });
 
     // Demo accounts information
     console.log('Demo Login Information:');
