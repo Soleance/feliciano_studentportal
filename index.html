@@ -1,15 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>University Portal</title>
   <style>
-    /* Reset */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html,body { height: 100%; font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
-
-    /* Login Page Styles */
+    /* Reset and Base Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background-color: #f9fafb;
+      color: #111827;
+      line-height: 1.5;
+    }
+    
+    /* Login Page */
     .login-container {
       min-height: 100vh;
       display: flex;
@@ -26,7 +36,7 @@
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-      border: 1px solid #e0e0e0;
+      background: white;
     }
     
     .login-section {
@@ -182,418 +192,333 @@
     .create-link:hover {
       text-decoration: underline;
     }
-
-    /* Portal Pages (hidden by default) */
+    
+    /* Portal Layout */
     #studentPortal, #facultyPortal {
       display: none;
+      height: 100vh;
+      overflow: hidden;
     }
-
-    /* Themes */
-    body.theme-light {
-      background: #ffffff;
-      color: #111827;
+    
+    .portal-container {
+      display: flex;
+      height: 100%;
     }
-    body.theme-dark {
-      background: #111827;
-      color: #f3f4f6;
-    }
-
-    /* Layout */
+    
+    /* Sidebar */
     .sidebar {
       width: 280px;
-      padding: 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
       background: #f8fafc;
       border-right: 1px solid #e5e7eb;
+      display: flex;
+      flex-direction: column;
+      padding: 18px;
       transition: all 0.3s ease;
       z-index: 1000;
     }
-    body.theme-dark .sidebar { 
-      background: #1f2937; 
-      border-right: 1px solid #374151;
-      color: #f3f4f6;
+    
+    .sidebar.collapsed {
+      width: 70px;
     }
-
-    /* Collapsed sidebar (desktop) */
-    .sidebar.collapsed { width: 70px; }
-
-    /* Profile area */
-    .profile { display:flex; flex-direction:column; align-items:center; gap:8px; padding-bottom:8px; }
-    .profile .avatar { 
-      width:70px; height:70px; border-radius:50%; 
-      display:inline-flex; align-items:center; justify-content:center; 
-      font-weight:700; font-size:18px; 
-      border:2px solid;
+    
+    .profile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+    }
+    
+    .avatar {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+      border: 2px solid;
       color: white;
     }
+    
     .student-avatar {
       background: #1e3a8a;
       border-color: #3b82f6;
     }
+    
     .faculty-avatar {
       background: #dc2626;
       border-color: #ef4444;
     }
-    body.theme-dark .student-avatar {
-      background: #1e40af;
-      border-color: #60a5fa;
+    
+    .profile .info {
+      text-align: center;
+      line-height: 1.1;
     }
-    body.theme-dark .faculty-avatar {
-      background: #b91c1c;
-      border-color: #f87171;
+    
+    .profile h3 {
+      font-size: 16px;
+      font-weight: 800;
     }
-    .profile .info { text-align:center; line-height:1.1; }
-    .profile h3 { font-size:16px; font-weight:800; }
-    .student-profile h3 { color: #1e3a8a; }
-    .faculty-profile h3 { color: #dc2626; }
-    body.theme-dark .student-profile h3 { color: #60a5fa; }
-    body.theme-dark .faculty-profile h3 { color: #f87171; }
-    .profile p { font-size:13px; opacity:0.95; margin-top:4px; color: #4b5563; }
-    body.theme-dark .profile p { color: #d1d5db; }
-
-    /* When collapsed: shrink avatar and hide text */
-    .sidebar.collapsed .profile .avatar { width:44px; height:44px; font-size:14px; }
-    .sidebar.collapsed .profile .info { display:none; }
-
-    /* Menu with icons + labels */
-    .menu { 
-      display:flex; 
-      flex-direction:column; 
-      gap:6px; 
-      margin-top:6px; 
+    
+    .student-profile h3 {
+      color: #1e3a8a;
+    }
+    
+    .faculty-profile h3 {
+      color: #dc2626;
+    }
+    
+    .profile p {
+      font-size: 13px;
+      opacity: 0.95;
+      margin-top: 4px;
+      color: #4b5563;
+    }
+    
+    .sidebar.collapsed .profile .avatar {
+      width: 44px;
+      height: 44px;
+      font-size: 14px;
+    }
+    
+    .sidebar.collapsed .profile .info {
+      display: none;
+    }
+    
+    .menu {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 6px;
       flex: 1;
     }
+    
     .menu button {
-      display:flex; 
-      align-items:center; 
-      gap:10px; 
-      padding:10px; 
-      border-radius:8px; 
-      border:none;
-      background:transparent; 
-      cursor:pointer; 
-      font-weight:700; 
-      text-align:left;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-weight: 700;
+      text-align: left;
       transition: background 0.2s;
       color: #374151;
       width: 100%;
     }
-    body.theme-dark .menu button {
-      color: #d1d5db;
-    }
+    
     .menu button:hover {
       background: #e5e7eb;
     }
-    body.theme-dark .menu button:hover {
-      background: #374151;
-    }
-    .menu button .icon { 
-      width:24px; 
-      text-align:center; 
-      font-size:14px; 
-      font-weight: bold;
-    }
-    .student-menu .icon {
+    
+    .menu button.active {
+      background: #dbeafe;
       color: #1e3a8a;
     }
-    .faculty-menu .icon {
-      color: #dc2626;
-    }
-    body.theme-dark .student-menu .icon {
-      color: #60a5fa;
-    }
-    body.theme-dark .faculty-menu .icon {
-      color: #f87171;
-    }
-    .menu button.active { 
-      background: #dbeafe; 
-      color: #1e3a8a;
-    }
-    body.theme-dark .menu button.active { 
-      background: #1e3a8a; 
-      color: #dbeafe;
-    }
+    
     .faculty-menu button.active {
       background: #fef2f2;
       color: #dc2626;
     }
-    body.theme-dark .faculty-menu button.active {
-      background: #7f1d1d;
-      color: #fecaca;
+    
+    .menu button .icon {
+      width: 24px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: bold;
     }
-
-    /* When collapsed: center icons and hide labels */
-    .sidebar.collapsed .menu button { justify-content:center; }
-    .sidebar.collapsed .menu .label { display:none; }
-
-    /* Main area */
-    .main { 
-      flex:1; 
-      padding:24px; 
-      overflow:auto; 
-      min-height:100vh; 
-      background: #f9fafb; 
-      transition: all 0.3s ease;
+    
+    .student-menu .icon {
+      color: #1e3a8a;
     }
-    body.theme-dark .main { background: #111827; }
-    .topbar { 
-      display:flex; 
-      justify-content:space-between; 
-      align-items:center; 
-      margin-bottom:18px; 
-      gap:12px; 
-      flex-wrap: wrap;
+    
+    .faculty-menu .icon {
+      color: #dc2626;
     }
-    .title { font-weight:800; font-size:20px; }
-    .student-title { color: #1e3a8a; }
-    .faculty-title { color: #dc2626; }
-    body.theme-dark .student-title { color: #60a5fa; }
-    body.theme-dark .faculty-title { color: #f87171; }
-    .clock { font-size:14px; opacity:0.95; color: #6b7280; }
-    body.theme-dark .clock { color: #9ca3af; }
-    .btn { 
-      padding:8px 12px; 
-      border-radius:8px; 
-      border:1px solid #d1d5db; 
-      background: #ffffff; 
-      cursor:pointer; 
-      font-weight:700;
-      color: #111827;
-    }
-    body.theme-dark .btn { 
-      background: #374151; 
-      border:1px solid #4b5563; 
-      color: #f3f4f6; 
-    }
-
-    /* Grid & cards */
-    .grid { 
-      display:grid; 
-      grid-template-columns: repeat(12,1fr); 
-      gap:16px; 
-    }
-    .card { 
-      background: #ffffff; 
-      padding:14px; 
-      border-radius:10px; 
-      border:1px solid #e5e7eb;
-      color: #111827;
-    }
-    body.theme-dark .card { 
-      background: #1f2937; 
-      border:1px solid #374151;
-      color: #f3f4f6;
-    }
-    .col-2 { grid-column: span 2; }
-    .col-3 { grid-column: span 3; }
-    .col-4 { grid-column: span 4; }
-    .col-5 { grid-column: span 5; }
-    .col-6 { grid-column: span 6; }
-    .col-7 { grid-column: span 7; }
-    .col-8 { grid-column: span 8; }
-    .col-9 { grid-column: span 9; }
-    .col-12 { grid-column: span 12; }
-
-    /* Inputs & tables */
-    input, textarea, select { 
-      width:100%; 
-      padding:8px; 
-      border-radius:6px; 
-      border:1px solid #d1d5db; 
-      background: #ffffff; 
-      color: #111827;
-    }
-    body.theme-dark input, body.theme-dark textarea, body.theme-dark select { 
-      background: #374151; 
-      border:1px solid #4b5563; 
-      color: #f3f4f6; 
-    }
-    table { width:100%; border-collapse:collapse; font-size:14px; }
-    th, td { padding:8px; border:1px solid #e5e7eb; text-align:left; color: #111827; }
-    body.theme-dark th, body.theme-dark td { 
-      border:1px solid #374151; 
-      color: #f3f4f6;
-    }
-    th {
-      background: #f3f4f6;
-      font-weight: 600;
-    }
-    body.theme-dark th {
-      background: #374151;
-    }
-
-    /* Top-left toggle button */
-    .collapseBtn { 
-      position: fixed; 
-      left:12px; 
-      top:12px; 
-      z-index:2000; 
-      padding:8px 10px; 
-      border-radius:8px; 
-      background: #ffffff; 
-      border:1px solid #d1d5db; 
-      cursor:pointer; 
-      font-weight:700;
-      color: #111827;
-      transition: left 0.3s ease;
-    }
-    body.theme-dark .collapseBtn { 
-      background: #374151; 
-      color: #f3f4f6; 
-      border:1px solid #4b5563; 
-    }
-    .sidebar.collapsed ~ .main .collapseBtn {
-      left: 82px;
-    }
-
-    /* Mobile: sidebar overlays and hides by default */
-    @media (max-width: 900px) {
-      .login-wrapper {
-        flex-direction: column;
-        max-width: 100%;
-      }
-      .student-login {
-        border-right: none;
-        border-bottom: 1px solid #e5e7eb;
-      }
-      .sidebar { 
-        position: fixed; 
-        left: -280px; 
-        top:0; 
-        height: 100vh; 
-        z-index: 1200; 
-        width:280px; 
-        box-shadow: 2px 0 12px rgba(0,0,0,0.2); 
-        transition: left 0.3s ease;
-      }
-      .sidebar.mobile-open { 
-        left: 0;
-      }
-      .sidebar.collapsed { 
-        width: 280px; 
-        left: -280px;
-      }
-      .sidebar.collapsed.mobile-open {
-        left: 0;
-      }
-      .collapseBtn {
-        display: block;
-      }
-      .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9 { 
-        grid-column: span 12; 
-      }
-      .grid {
-        gap: 12px;
-      }
-      .topbar {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-      }
-      .stats-container {
-        flex-direction: column;
-      }
-      .course-grid {
-        grid-template-columns: 1fr !important;
-      }
-      .people-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
-      }
-      .calendar-grid {
-        grid-template-columns: 1fr;
-        gap: 6px;
-      }
-      .calendar-day {
-        min-height: 80px;
-      }
-      .main {
-        padding: 16px;
-      }
-      .card {
-        padding: 12px;
-      }
-    }
-
-    /* Additional styles */
-    .muted { opacity: 0.7; color: #6b7280; }
-    body.theme-dark .muted { color: #9ca3af; }
-    .card-header { 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center; 
-      margin-bottom: 12px; 
-      padding-bottom: 8px;
-      border-bottom: 1px solid #e5e7eb;
-    }
-    body.theme-dark .card-header {
-      border-bottom: 1px solid #374151;
-    }
-    .card-title { font-weight: 800; font-size: 16px; }
-    .student-card .card-title { color: #1e3a8a; }
-    .faculty-card .card-title { color: #dc2626; }
-    body.theme-dark .student-card .card-title { color: #60a5fa; }
-    body.theme-dark .faculty-card .card-title { color: #f87171; }
-    .action-btn { 
-      background: none; 
-      border: none; 
-      cursor: pointer; 
-      font-size: 14px; 
-      opacity: 0.7;
-      text-decoration: underline;
-    }
-    .student-action { color: #1e3a8a; }
-    .faculty-action { color: #dc2626; }
-    body.theme-dark .student-action { color: #60a5fa; }
-    body.theme-dark .faculty-action { color: #f87171; }
-    .action-btn:hover { opacity: 1; }
-    .schedule-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 8px 0;
-      border-bottom: 1px solid #e5e7eb;
-    }
-    body.theme-dark .schedule-item {
-      border-bottom: 1px solid #374151;
-    }
-    .schedule-time { font-weight: 600; width: 80px; }
-    .schedule-course { flex: 1; margin-left: 12px; }
-    .schedule-location { opacity: 0.7; font-size: 12px; width: 100px; text-align: right; }
-    .notification-badge {
-      position: absolute;
-      top: -5px;
-      right: -5px;
-      background: #dc2626;
-      color: white;
-      border-radius: 50%;
-      width: 18px;
-      height: 18px;
-      font-size: 10px;
-      display: flex;
-      align-items: center;
+    
+    .sidebar.collapsed .menu button {
       justify-content: center;
     }
-    .menu-item-wrapper {
-      position: relative;
+    
+    .sidebar.collapsed .menu .label {
+      display: none;
     }
+    
     .logout-btn {
       margin-top: auto;
       background: rgba(220, 38, 38, 0.1);
       color: #dc2626;
       border: 1px solid rgba(220, 38, 38, 0.2);
       width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
     }
-    body.theme-dark .logout-btn {
-      background: rgba(220, 38, 38, 0.2);
-      color: #f87171;
-      border: 1px solid rgba(220, 38, 38, 0.3);
+    
+    /* Main Content */
+    .main {
+      flex: 1;
+      padding: 24px;
+      overflow: auto;
+      min-height: 100vh;
+      background: #f9fafb;
+      transition: all 0.3s ease;
     }
+    
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      gap: 12px;
+    }
+    
+    .title {
+      font-weight: 800;
+      font-size: 20px;
+    }
+    
+    .student-title {
+      color: #1e3a8a;
+    }
+    
+    .faculty-title {
+      color: #dc2626;
+    }
+    
+    .clock {
+      font-size: 14px;
+      opacity: 0.95;
+      color: #6b7280;
+    }
+    
+    .btn {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      background: #ffffff;
+      cursor: pointer;
+      font-weight: 700;
+      color: #111827;
+    }
+    
+    /* Collapse Button */
+    .collapseBtn {
+      position: fixed;
+      left: 12px;
+      top: 12px;
+      z-index: 2000;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: #ffffff;
+      border: 1px solid #d1d5db;
+      cursor: pointer;
+      font-weight: 700;
+      color: #111827;
+      transition: left 0.3s ease;
+    }
+    
+    .sidebar.collapsed ~ .main .collapseBtn {
+      left: 82px;
+    }
+    
+    /* Content Sections */
+    .section-content {
+      display: none;
+    }
+    
+    .section-content.active {
+      display: block;
+    }
+    
+    /* Grid and Cards */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+    }
+    
+    .card {
+      background: #ffffff;
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      color: #111827;
+    }
+    
+    .col-4 {
+      grid-column: span 4;
+    }
+    
+    .col-8 {
+      grid-column: span 8;
+    }
+    
+    .col-12 {
+      grid-column: span 12;
+    }
+    
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .card-title {
+      font-weight: 800;
+      font-size: 16px;
+    }
+    
+    .student-card .card-title {
+      color: #1e3a8a;
+    }
+    
+    .faculty-card .card-title {
+      color: #dc2626;
+    }
+    
+    .action-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      opacity: 0.7;
+      text-decoration: underline;
+    }
+    
+    .student-action {
+      color: #1e3a8a;
+    }
+    
+    .faculty-action {
+      color: #dc2626;
+    }
+    
+    .action-btn:hover {
+      opacity: 1;
+    }
+    
+    .muted {
+      opacity: 0.7;
+      color: #6b7280;
+    }
+    
+    /* Stats */
     .stats-container {
       display: flex;
       gap: 12px;
       margin: 12px 0;
     }
+    
     .stat-card {
       flex: 1;
       padding: 12px;
@@ -601,22 +526,26 @@
       background: #f3f4f6;
       text-align: center;
     }
-    body.theme-dark .stat-card {
-      background: #374151;
-    }
+    
     .stat-value {
       font-size: 20px;
       font-weight: 800;
       margin-bottom: 4px;
     }
-    .student-stat .stat-value { color: #1e3a8a; }
-    .faculty-stat .stat-value { color: #dc2626; }
-    body.theme-dark .student-stat .stat-value { color: #60a5fa; }
-    body.theme-dark .faculty-stat .stat-value { color: #f87171; }
+    
+    .student-stat .stat-value {
+      color: #1e3a8a;
+    }
+    
+    .faculty-stat .stat-value {
+      color: #dc2626;
+    }
+    
     .stat-label {
       font-size: 12px;
       opacity: 0.8;
     }
+    
     .progress-bar {
       height: 6px;
       background: #e5e7eb;
@@ -624,88 +553,77 @@
       margin: 8px 0;
       overflow: hidden;
     }
-    body.theme-dark .progress-bar {
-      background: #4b5563;
-    }
+    
     .progress-fill {
       height: 100%;
       border-radius: 3px;
     }
+    
     .student-progress {
       background: linear-gradient(90deg, #1e3a8a, #3b82f6);
     }
+    
     .faculty-progress {
       background: linear-gradient(90deg, #dc2626, #ef4444);
     }
     
-    /* Section-specific styles */
-    .section-content {
-      display: none;
-    }
-    .section-content.active {
-      display: block;
-    }
-    .calendar-grid {
+    /* Course Grid */
+    .course-grid {
       display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 8px;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
       margin-top: 16px;
     }
-    .calendar-day {
+    
+    .course-card {
+      background: #f8fafc;
+      padding: 20px;
+      border-radius: 12px;
       border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      padding: 8px;
-      min-height: 100px;
-      background: white;
+      cursor: pointer;
     }
-    body.theme-dark .calendar-day {
-      border: 1px solid #374151;
-      background: #1f2937;
+    
+    /* Schedule */
+    .schedule-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #e5e7eb;
     }
-    .calendar-day-header {
+    
+    .schedule-time {
       font-weight: 600;
-      margin-bottom: 8px;
-      text-align: center;
+      width: 80px;
     }
-    .calendar-event {
-      background: #dbeafe;
-      border-radius: 4px;
-      padding: 4px;
-      margin-bottom: 4px;
+    
+    .schedule-course {
+      flex: 1;
+      margin-left: 12px;
+    }
+    
+    .schedule-location {
+      opacity: 0.7;
       font-size: 12px;
+      width: 100px;
+      text-align: right;
     }
-    body.theme-dark .calendar-event {
-      background: #1e3a8a;
-    }
-    .faculty-calendar-event {
-      background: #fef2f2;
-    }
-    body.theme-dark .faculty-calendar-event {
-      background: #7f1d1d;
-    }
-    .today {
-      background: #eff6ff;
-      border-color: #3b82f6;
-    }
-    body.theme-dark .today {
-      background: #1e3a8a;
-      border-color: #60a5fa;
-    }
+    
+    /* Grades */
     .grade-item {
       display: flex;
       justify-content: space-between;
       padding: 12px;
       border-bottom: 1px solid #e5e7eb;
     }
-    body.theme-dark .grade-item {
-      border-bottom: 1px solid #374151;
-    }
+    
     .grade-course {
       font-weight: 600;
     }
+    
     .grade-score {
       font-weight: 600;
     }
+    
     .grade-letter {
       width: 40px;
       text-align: center;
@@ -713,92 +631,187 @@
       border-radius: 4px;
       padding: 2px 4px;
     }
+    
     .grade-a {
       background: #dcfce7;
       color: #166534;
     }
+    
     .grade-b {
       background: #dbeafe;
       color: #1e40af;
     }
+    
     .grade-c {
       background: #fef3c7;
       color: #92400e;
     }
-    body.theme-dark .grade-a {
-      background: #166534;
-      color: #dcfce7;
-    }
-    body.theme-dark .grade-b {
-      background: #1e40af;
-      color: #dbeafe;
-    }
-    body.theme-dark .grade-c {
-      background: #92400e;
-      color: #fef3c7;
-    }
-
-    /* Portal Layout */
-    #studentPortal, #facultyPortal {
-      display: flex;
-      height: 100vh;
-      overflow: hidden;
-    }
-
-    /* Mobile overlay for sidebar */
-    .mobile-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.5);
-      z-index: 1100;
+    
+    /* Calendar */
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      margin-top: 16px;
     }
     
+    .calendar-day {
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 8px;
+      min-height: 100px;
+      background: white;
+    }
+    
+    .calendar-day-header {
+      font-weight: 600;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    
+    .calendar-event {
+      background: #dbeafe;
+      border-radius: 4px;
+      padding: 4px;
+      margin-bottom: 4px;
+      font-size: 12px;
+    }
+    
+    .faculty-calendar-event {
+      background: #fef2f2;
+    }
+    
+    .today {
+      background: #eff6ff;
+      border-color: #3b82f6;
+    }
+    
+    /* Mobile Styles */
     @media (max-width: 900px) {
+      .login-wrapper {
+        flex-direction: column;
+        max-width: 100%;
+      }
+      
+      .student-login {
+        border-right: none;
+        border-bottom: 1px solid #e5e7eb;
+      }
+      
+      .sidebar {
+        position: fixed;
+        left: -280px;
+        top: 0;
+        height: 100vh;
+        z-index: 1200;
+        width: 280px;
+        box-shadow: 2px 0 12px rgba(0,0,0,0.2);
+        transition: left 0.3s ease;
+      }
+      
+      .sidebar.mobile-open {
+        left: 0;
+      }
+      
+      .sidebar.collapsed {
+        width: 280px;
+        left: -280px;
+      }
+      
+      .sidebar.collapsed.mobile-open {
+        left: 0;
+      }
+      
+      .mobile-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 1100;
+      }
+      
       .mobile-overlay.active {
         display: block;
       }
+      
+      .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9 {
+        grid-column: span 12;
+      }
+      
+      .grid {
+        gap: 12px;
+      }
+      
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      
+      .stats-container {
+        flex-direction: column;
+      }
+      
+      .course-grid {
+        grid-template-columns: 1fr !important;
+      }
+      
+      .calendar-grid {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+      
+      .calendar-day {
+        min-height: 80px;
+      }
+      
+      .main {
+        padding: 16px;
+      }
+      
+      .card {
+        padding: 12px;
+      }
     }
-
-    /* Mobile-specific adjustments */
+    
     @media (max-width: 600px) {
       .login-section {
         padding: 20px;
       }
+      
       .login-icon {
         width: 60px;
         height: 60px;
         font-size: 24px;
       }
+      
       .login-title {
         font-size: 20px;
       }
+      
       .form-input {
         padding: 10px;
       }
+      
       .login-btn {
         padding: 10px;
       }
+      
       .course-card {
         padding: 16px !important;
       }
+      
       .schedule-time, .schedule-location {
         width: auto;
         min-width: 70px;
       }
-      .calendar-grid {
-        grid-template-columns: 1fr;
-      }
-      .calendar-day {
-        min-height: auto;
-      }
     }
   </style>
 </head>
-<body class="theme-light">
+<body>
   <!-- Login Page -->
   <div id="loginPage" class="login-container">
     <div class="login-wrapper">
@@ -855,234 +868,236 @@
     <div class="mobile-overlay" id="studentOverlay"></div>
     <button class="collapseBtn" id="studentCollapseBtn">☰</button>
 
-    <aside class="sidebar" id="studentSidebar">
-      <div class="profile student-profile">
-        <div class="avatar student-avatar" id="studentAvatar">JD</div>
-        <div class="info">
-          <h3 id="studentName">Juan Dela Cruz</h3>
-          <p id="studentCourse">BS Information Technology</p>
-          <p id="studentID">ID: UA202201623</p>
+    <div class="portal-container">
+      <aside class="sidebar" id="studentSidebar">
+        <div class="profile student-profile">
+          <div class="avatar student-avatar" id="studentAvatar">JD</div>
+          <div class="info">
+            <h3 id="studentName">Juan Dela Cruz</h3>
+            <p id="studentCourse">BS Information Technology</p>
+            <p id="studentID">ID: UA202201623</p>
+          </div>
         </div>
-      </div>
 
-      <nav class="menu student-menu" id="studentMenu">
-        <div class="menu-item-wrapper">
-          <button class="active" data-section="dashboard"><span class="icon">≡</span><span class="label">Dashboard</span></button>
-        </div>
-        <div class="menu-item-wrapper">
-          <button data-section="classes"><span class="icon">📚</span><span class="label">Classes</span></button>
-        </div>
-        <div class="menu-item-wrapper">
-          <button data-section="schedule"><span class="icon">⏰</span><span class="label">Schedule</span></button>
-        </div>
-        <div class="menu-item-wrapper">
-          <button data-section="grades"><span class="icon">A+</span><span class="label">Grades</span></button>
-        </div>
-        <div class="menu-item-wrapper">
-          <button data-section="calendar"><span class="icon">📅</span><span class="label">Calendar</span></button>
-        </div>
-        <button class="logout-btn" id="studentLogoutBtn">Logout</button>
-      </nav>
-    </aside>
+        <nav class="menu student-menu" id="studentMenu">
+          <div class="menu-item-wrapper">
+            <button class="active" data-section="dashboard"><span class="icon">≡</span><span class="label">Dashboard</span></button>
+          </div>
+          <div class="menu-item-wrapper">
+            <button data-section="classes"><span class="icon">📚</span><span class="label">Classes</span></button>
+          </div>
+          <div class="menu-item-wrapper">
+            <button data-section="schedule"><span class="icon">⏰</span><span class="label">Schedule</span></button>
+          </div>
+          <div class="menu-item-wrapper">
+            <button data-section="grades"><span class="icon">A+</span><span class="label">Grades</span></button>
+          </div>
+          <div class="menu-item-wrapper">
+            <button data-section="calendar"><span class="icon">📅</span><span class="label">Calendar</span></button>
+          </div>
+          <button class="logout-btn" id="studentLogoutBtn">Logout</button>
+        </nav>
+      </aside>
 
-    <main class="main">
-      <div class="topbar">
-        <div>
-          <div class="title student-title" id="studentPageTitle">Dashboard</div>
-          <div class="clock" id="studentClock">--:--</div>
+      <main class="main">
+        <div class="topbar">
+          <div>
+            <div class="title student-title" id="studentPageTitle">Dashboard</div>
+            <div class="clock" id="studentClock">--:--</div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:center;">
+            <div id="studentThemeInfo">Light Mode</div>
+            <button id="studentThemeToggle" class="btn">Toggle Theme</button>
+          </div>
         </div>
-        <div style="display:flex;gap:12px;align-items:center;">
-          <div id="studentThemeInfo">Light Mode</div>
-          <button id="studentThemeToggle" class="btn">Toggle Theme</button>
-        </div>
-      </div>
 
-      <section id="studentContentArea">
-        <!-- Dashboard Section -->
-        <div class="section-content active" id="studentDashboardSection">
-          <div class="grid">
-            <div class="card student-card col-4">
-              <div class="card-header">
-                <div class="card-title">Student Profile</div>
-              </div>
-              <div style="display:flex;gap:12px;align-items:center;">
-                <div style="width:64px;height:64px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;background:#1e3a8a;color:white;" id="studentCardAvatar">JD</div>
-                <div>
-                  <div style="font-weight:800" id="studentCardName">Juan Dela Cruz</div>
-                  <div class="muted" id="studentCardCourse">BS Information Technology</div>
-                  <div class="muted" id="studentCardID">ID: UA202201623</div>
+        <section id="studentContentArea">
+          <!-- Dashboard Section -->
+          <div class="section-content active" id="studentDashboardSection">
+            <div class="grid">
+              <div class="card student-card col-4">
+                <div class="card-header">
+                  <div class="card-title">Student Profile</div>
                 </div>
+                <div style="display:flex;gap:12px;align-items:center;">
+                  <div style="width:64px;height:64px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;background:#1e3a8a;color:white;" id="studentCardAvatar">JD</div>
+                  <div>
+                    <div style="font-weight:800" id="studentCardName">Juan Dela Cruz</div>
+                    <div class="muted" id="studentCardCourse">BS Information Technology</div>
+                    <div class="muted" id="studentCardID">ID: UA202201623</div>
+                  </div>
+                </div>
+                <div style="height:10px"></div>
+                <div class="muted">Year: 3rd Year</div>
+                <div class="muted">Status: Regular</div>
+                <div class="muted">College: Computer Studies</div>
               </div>
-              <div style="height:10px"></div>
-              <div class="muted">Year: 3rd Year</div>
-              <div class="muted">Status: Regular</div>
-              <div class="muted">College: Computer Studies</div>
-            </div>
 
-            <div class="card student-card col-8">
-              <div class="card-header">
-                <div class="card-title">Academic Summary</div>
-                <button class="action-btn student-action" id="studentViewTranscript">View Transcript</button>
+              <div class="card student-card col-8">
+                <div class="card-header">
+                  <div class="card-title">Academic Summary</div>
+                  <button class="action-btn student-action" id="studentViewTranscript">View Transcript</button>
+                </div>
+                <div class="stats-container">
+                  <div class="stat-card student-stat">
+                    <div class="stat-value" id="studentCurrentGPA">3.25</div>
+                    <div class="stat-label">Current GPA</div>
+                  </div>
+                  <div class="stat-card student-stat">
+                    <div class="stat-value" id="studentCompletedCredits">78</div>
+                    <div class="stat-label">Credits Completed</div>
+                  </div>
+                  <div class="stat-card student-stat">
+                    <div class="stat-value" id="studentEnrolledCourses">5</div>
+                    <div class="stat-label">Current Courses</div>
+                  </div>
+                  <div class="stat-card student-stat">
+                    <div class="stat-value" id="studentGraduationProgress">65%</div>
+                    <div class="stat-label">Graduation Progress</div>
+                  </div>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill student-progress" style="width: 65%"></div>
+                </div>
+                <div class="muted">You need 42 more credits to graduate</div>
               </div>
-              <div class="stats-container">
-                <div class="stat-card student-stat">
-                  <div class="stat-value" id="studentCurrentGPA">3.25</div>
-                  <div class="stat-label">Current GPA</div>
-                </div>
-                <div class="stat-card student-stat">
-                  <div class="stat-value" id="studentCompletedCredits">78</div>
-                  <div class="stat-label">Credits Completed</div>
-                </div>
-                <div class="stat-card student-stat">
-                  <div class="stat-value" id="studentEnrolledCourses">5</div>
-                  <div class="stat-label">Current Courses</div>
-                </div>
-                <div class="stat-card student-stat">
-                  <div class="stat-value" id="studentGraduationProgress">65%</div>
-                  <div class="stat-label">Graduation Progress</div>
-                </div>
-              </div>
-              <div class="progress-bar">
-                <div class="progress-fill student-progress" style="width: 65%"></div>
-              </div>
-              <div class="muted">You need 42 more credits to graduate</div>
-            </div>
 
-            <div class="card student-card col-12">
-              <div class="card-header">
-                <div class="card-title">My Classes</div>
-                <button class="action-btn student-action" id="studentJoinClass">Join Class</button>
-              </div>
-              <div class="course-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
-                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openStudentClassroom('CS301')">
-                  <div style="font-weight: 800; font-size: 18px; color: #1e3a8a;">CS301</div>
-                  <div style="font-size: 16px; margin-bottom: 8px;">Data Structures</div>
-                  <div class="muted">Dr. Johnson</div>
-                  <div class="muted" style="margin-top: 8px;">2 new announcements • 1 assignment due</div>
+              <div class="card student-card col-12">
+                <div class="card-header">
+                  <div class="card-title">My Classes</div>
+                  <button class="action-btn student-action" id="studentJoinClass">Join Class</button>
                 </div>
-                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openStudentClassroom('MATH202')">
-                  <div style="font-weight: 800; font-size: 18px; color: #1e3a8a;">MATH202</div>
-                  <div style="font-size: 16px; margin-bottom: 8px;">Calculus II</div>
-                  <div class="muted">Dr. Smith</div>
-                  <div class="muted" style="margin-top: 8px;">1 new announcement • Quiz tomorrow</div>
+                <div class="course-grid">
+                  <div class="course-card" style="cursor: pointer;" onclick="openStudentClassroom('CS301')">
+                    <div style="font-weight: 800; font-size: 18px; color: #1e3a8a;">CS301</div>
+                    <div style="font-size: 16px; margin-bottom: 8px;">Data Structures</div>
+                    <div class="muted">Dr. Johnson</div>
+                    <div class="muted" style="margin-top: 8px;">2 new announcements • 1 assignment due</div>
+                  </div>
+                  <div class="course-card" style="cursor: pointer;" onclick="openStudentClassroom('MATH202')">
+                    <div style="font-weight: 800; font-size: 18px; color: #1e3a8a;">MATH202</div>
+                    <div style="font-size: 16px; margin-bottom: 8px;">Calculus II</div>
+                    <div class="muted">Dr. Smith</div>
+                    <div class="muted" style="margin-top: 8px;">1 new announcement • Quiz tomorrow</div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Classes Section -->
-        <div class="section-content" id="studentClassesSection">
-          <div class="grid">
-            <div class="card student-card col-12">
-              <div class="card-header">
-                <div class="card-title">My Courses</div>
-                <button class="action-btn student-action" id="studentJoinNewClass">Join New Class</button>
-              </div>
-              <div class="course-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
-                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openStudentClassroom('CS301')">
-                  <div style="font-weight: 800; font-size: 18px; color: #1e3a8a;">CS301</div>
-                  <div style="font-size: 16px; margin-bottom: 8px;">Data Structures</div>
-                  <div class="muted">Dr. Johnson</div>
-                  <div class="muted" style="margin-top: 8px;">Mon/Wed/Fri 9:00-10:00 AM</div>
-                  <div class="muted">Room: CS Building 101</div>
+          <!-- Classes Section -->
+          <div class="section-content" id="studentClassesSection">
+            <div class="grid">
+              <div class="card student-card col-12">
+                <div class="card-header">
+                  <div class="card-title">My Courses</div>
+                  <button class="action-btn student-action" id="studentJoinNewClass">Join New Class</button>
                 </div>
-                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openStudentClassroom('MATH202')">
-                  <div style="font-weight: 800; font-size: 18px; color: #1e3a8a;">MATH202</div>
-                  <div style="font-size: 16px; margin-bottom: 8px;">Calculus II</div>
-                  <div class="muted">Dr. Smith</div>
-                  <div class="muted" style="margin-top: 8px;">Tue/Thu 11:00 AM-12:30 PM</div>
-                  <div class="muted">Room: Math Building 205</div>
+                <div class="course-grid">
+                  <div class="course-card" style="cursor: pointer;" onclick="openStudentClassroom('CS301')">
+                    <div style="font-weight: 800; font-size: 18px; color: #1e3a8a;">CS301</div>
+                    <div style="font-size: 16px; margin-bottom: 8px;">Data Structures</div>
+                    <div class="muted">Dr. Johnson</div>
+                    <div class="muted" style="margin-top: 8px;">Mon/Wed/Fri 9:00-10:00 AM</div>
+                    <div class="muted">Room: CS Building 101</div>
+                  </div>
+                  <div class="course-card" style="cursor: pointer;" onclick="openStudentClassroom('MATH202')">
+                    <div style="font-weight: 800; font-size: 18px; color: #1e3a8a;">MATH202</div>
+                    <div style="font-size: 16px; margin-bottom: 8px;">Calculus II</div>
+                    <div class="muted">Dr. Smith</div>
+                    <div class="muted" style="margin-top: 8px;">Tue/Thu 11:00 AM-12:30 PM</div>
+                    <div class="muted">Room: Math Building 205</div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Schedule Section -->
-        <div class="section-content" id="studentScheduleSection">
-          <div class="grid">
-            <div class="card student-card col-12">
-              <div class="card-header">
-                <div class="card-title">Weekly Schedule</div>
-                <button class="action-btn student-action" id="studentExportSchedule">Export Schedule</button>
-              </div>
-              <div class="schedule-item">
-                <div class="schedule-time">9:00 AM</div>
-                <div class="schedule-course">Data Structures (CS301)</div>
-                <div class="schedule-location">CS Building 101</div>
-              </div>
-              <div class="schedule-item">
-                <div class="schedule-time">11:00 AM</div>
-                <div class="schedule-course">Calculus II (MATH202)</div>
-                <div class="schedule-location">Math Building 205</div>
-              </div>
-              <div class="schedule-item">
-                <div class="schedule-time">2:00 PM</div>
-                <div class="schedule-course">English Literature (ENG201)</div>
-                <div class="schedule-location">Humanities 102</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Grades Section -->
-        <div class="section-content" id="studentGradesSection">
-          <div class="grid">
-            <div class="card student-card col-12">
-              <div class="card-header">
-                <div class="card-title">Current Grades</div>
-                <button class="action-btn student-action" id="studentViewGradeHistory">View Grade History</button>
-              </div>
-              <div class="grade-item">
-                <div class="grade-course">Data Structures (CS301)</div>
-                <div class="grade-score">88%</div>
-                <div class="grade-letter grade-b">B+</div>
-              </div>
-              <div class="grade-item">
-                <div class="grade-course">Calculus II (MATH202)</div>
-                <div class="grade-score">92%</div>
-                <div class="grade-letter grade-a">A-</div>
-              </div>
-              <div class="grade-item">
-                <div class="grade-course">English Literature (ENG201)</div>
-                <div class="grade-score">85%</div>
-                <div class="grade-letter grade-b">B</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Calendar Section -->
-        <div class="section-content" id="studentCalendarSection">
-          <div class="grid">
-            <div class="card student-card col-12">
-              <div class="card-header">
-                <div class="card-title">Academic Calendar</div>
-                <button class="action-btn student-action" id="studentAddEvent">Add Event</button>
-              </div>
-              <div class="calendar-grid">
-                <div class="calendar-day">
-                  <div class="calendar-day-header">Mon</div>
-                  <div class="calendar-event">Data Structures 9:00 AM</div>
-                  <div class="calendar-event">English Lit 2:00 PM</div>
+          <!-- Schedule Section -->
+          <div class="section-content" id="studentScheduleSection">
+            <div class="grid">
+              <div class="card student-card col-12">
+                <div class="card-header">
+                  <div class="card-title">Weekly Schedule</div>
+                  <button class="action-btn student-action" id="studentExportSchedule">Export Schedule</button>
                 </div>
-                <div class="calendar-day">
-                  <div class="calendar-day-header">Tue</div>
-                  <div class="calendar-event">Calculus II 11:00 AM</div>
-                  <div class="calendar-event">Physics I 1:00 PM</div>
+                <div class="schedule-item">
+                  <div class="schedule-time">9:00 AM</div>
+                  <div class="schedule-course">Data Structures (CS301)</div>
+                  <div class="schedule-location">CS Building 101</div>
                 </div>
-                <div class="calendar-day today">
-                  <div class="calendar-day-header">Wed</div>
-                  <div class="calendar-event">Data Structures 9:00 AM</div>
-                  <div class="calendar-event">English Lit 2:00 PM</div>
+                <div class="schedule-item">
+                  <div class="schedule-time">11:00 AM</div>
+                  <div class="schedule-course">Calculus II (MATH202)</div>
+                  <div class="schedule-location">Math Building 205</div>
+                </div>
+                <div class="schedule-item">
+                  <div class="schedule-time">2:00 PM</div>
+                  <div class="schedule-course">English Literature (ENG201)</div>
+                  <div class="schedule-location">Humanities 102</div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-    </main>
+
+          <!-- Grades Section -->
+          <div class="section-content" id="studentGradesSection">
+            <div class="grid">
+              <div class="card student-card col-12">
+                <div class="card-header">
+                  <div class="card-title">Current Grades</div>
+                  <button class="action-btn student-action" id="studentViewGradeHistory">View Grade History</button>
+                </div>
+                <div class="grade-item">
+                  <div class="grade-course">Data Structures (CS301)</div>
+                  <div class="grade-score">88%</div>
+                  <div class="grade-letter grade-b">B+</div>
+                </div>
+                <div class="grade-item">
+                  <div class="grade-course">Calculus II (MATH202)</div>
+                  <div class="grade-score">92%</div>
+                  <div class="grade-letter grade-a">A-</div>
+                </div>
+                <div class="grade-item">
+                  <div class="grade-course">English Literature (ENG201)</div>
+                  <div class="grade-score">85%</div>
+                  <div class="grade-letter grade-b">B</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Calendar Section -->
+          <div class="section-content" id="studentCalendarSection">
+            <div class="grid">
+              <div class="card student-card col-12">
+                <div class="card-header">
+                  <div class="card-title">Academic Calendar</div>
+                  <button class="action-btn student-action" id="studentAddEvent">Add Event</button>
+                </div>
+                <div class="calendar-grid">
+                  <div class="calendar-day">
+                    <div class="calendar-day-header">Mon</div>
+                    <div class="calendar-event">Data Structures 9:00 AM</div>
+                    <div class="calendar-event">English Lit 2:00 PM</div>
+                  </div>
+                  <div class="calendar-day">
+                    <div class="calendar-day-header">Tue</div>
+                    <div class="calendar-event">Calculus II 11:00 AM</div>
+                    <div class="calendar-event">Physics I 1:00 PM</div>
+                  </div>
+                  <div class="calendar-day today">
+                    <div class="calendar-day-header">Wed</div>
+                    <div class="calendar-event">Data Structures 9:00 AM</div>
+                    <div class="calendar-event">English Lit 2:00 PM</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
   </div>
 
   <!-- Faculty Portal -->
@@ -1090,205 +1105,207 @@
     <div class="mobile-overlay" id="facultyOverlay"></div>
     <button class="collapseBtn" id="facultyCollapseBtn">☰</button>
 
-    <aside class="sidebar" id="facultySidebar">
-      <div class="profile faculty-profile">
-        <div class="avatar faculty-avatar" id="facultyAvatar">JD</div>
-        <div class="info">
-          <h3 id="facultyName">Dr. Jane Doe</h3>
-          <p id="facultyDepartment">Computer Science</p>
-          <p id="facultyID">ID: F2021001</p>
-        </div>
-      </div>
-
-      <nav class="menu faculty-menu" id="facultyMenu">
-        <div class="menu-item-wrapper">
-          <button class="active" data-section="dashboard"><span class="icon">≡</span><span class="label">Dashboard</span></button>
-        </div>
-        <div class="menu-item-wrapper">
-          <button data-section="classes"><span class="icon">📚</span><span class="label">Classes</span></button>
-        </div>
-        <div class="menu-item-wrapper">
-          <button data-section="grading"><span class="icon">A+</span><span class="label">Grading</span></button>
-        </div>
-        <div class="menu-item-wrapper">
-          <button data-section="calendar"><span class="icon">📅</span><span class="label">Calendar</span></button>
-        </div>
-        <button class="logout-btn" id="facultyLogoutBtn">Logout</button>
-      </nav>
-    </aside>
-
-    <main class="main">
-      <div class="topbar">
-        <div>
-          <div class="title faculty-title" id="facultyPageTitle">Dashboard</div>
-          <div class="clock" id="facultyClock">--:--</div>
-        </div>
-        <div style="display:flex;gap:12px;align-items:center;">
-          <div id="facultyThemeInfo">Light Mode</div>
-          <button id="facultyThemeToggle" class="btn">Toggle Theme</button>
-        </div>
-      </div>
-
-      <section id="facultyContentArea">
-        <!-- Dashboard Section -->
-        <div class="section-content active" id="facultyDashboardSection">
-          <div class="grid">
-            <div class="card faculty-card col-4">
-              <div class="card-header">
-                <div class="card-title">Faculty Profile</div>
-              </div>
-              <div style="display:flex;gap:12px;align-items:center;">
-                <div style="width:64px;height:64px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;background:#dc2626;color:white;" id="facultyCardAvatar">JD</div>
-                <div>
-                  <div style="font-weight:800" id="facultyCardName">Dr. Jane Doe</div>
-                  <div class="muted" id="facultyCardDepartment">Computer Science</div>
-                  <div class="muted" id="facultyCardID">ID: F2021001</div>
-                </div>
-              </div>
-              <div style="height:10px"></div>
-              <div class="muted">Position: Associate Professor</div>
-              <div class="muted">Office: CS Building 305</div>
-              <div class="muted">Email: j.doe@university.edu</div>
-            </div>
-
-            <div class="card faculty-card col-8">
-              <div class="card-header">
-                <div class="card-title">Teaching Summary</div>
-                <button class="action-btn faculty-action" id="facultyViewReports">View Reports</button>
-              </div>
-              <div class="stats-container">
-                <div class="stat-card faculty-stat">
-                  <div class="stat-value" id="facultyCurrentCourses">4</div>
-                  <div class="stat-label">Current Courses</div>
-                </div>
-                <div class="stat-card faculty-stat">
-                  <div class="stat-value" id="facultyTotalStudents">142</div>
-                  <div class="stat-label">Total Students</div>
-                </div>
-                <div class="stat-card faculty-stat">
-                  <div class="stat-value" id="facultyPendingGrading">23</div>
-                  <div class="stat-label">Pending Grading</div>
-                </div>
-              </div>
-              <div class="progress-bar">
-                <div class="progress-fill faculty-progress" style="width: 75%"></div>
-              </div>
-              <div class="muted">Semester Progress: 75% complete</div>
-            </div>
-
-            <div class="card faculty-card col-12">
-              <div class="card-header">
-                <div class="card-title">My Classes</div>
-                <button class="action-btn faculty-action" id="facultyCreateClass">Create Class</button>
-              </div>
-              <div class="course-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
-                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openFacultyClassroom('CS301')">
-                  <div style="font-weight: 800; font-size: 18px; color: #dc2626;">CS301</div>
-                  <div style="font-size: 16px; margin-bottom: 8px;">Data Structures</div>
-                  <div class="muted">42 students • Fall 2025</div>
-                  <div class="muted" style="margin-top: 8px;">5 assignments • 23 to grade</div>
-                </div>
-                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openFacultyClassroom('CS401')">
-                  <div style="font-weight: 800; font-size: 18px; color: #dc2626;">CS401</div>
-                  <div style="font-size: 16px; margin-bottom: 8px;">Algorithms</div>
-                  <div class="muted">38 students • Fall 2025</div>
-                  <div class="muted" style="margin-top: 8px;">3 assignments • All graded</div>
-                </div>
-              </div>
-            </div>
+    <div class="portal-container">
+      <aside class="sidebar" id="facultySidebar">
+        <div class="profile faculty-profile">
+          <div class="avatar faculty-avatar" id="facultyAvatar">JD</div>
+          <div class="info">
+            <h3 id="facultyName">Dr. Jane Doe</h3>
+            <p id="facultyDepartment">Computer Science</p>
+            <p id="facultyID">ID: F2021001</p>
           </div>
         </div>
 
-        <!-- Classes Section -->
-        <div class="section-content" id="facultyClassesSection">
-          <div class="grid">
-            <div class="card faculty-card col-12">
-              <div class="card-header">
-                <div class="card-title">Course Management</div>
-                <button class="action-btn faculty-action" id="facultyCreateNewClass">Create New Class</button>
-              </div>
-              <div class="course-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
-                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openFacultyClassroom('CS301')">
-                  <div style="font-weight: 800; font-size: 18px; color: #dc2626;">CS301</div>
-                  <div style="font-size: 16px; margin-bottom: 8px;">Data Structures</div>
-                  <div class="muted">42 students • Fall 2025</div>
-                  <div class="muted" style="margin-top: 8px;">Mon/Wed/Fri 9:00-10:00 AM</div>
-                  <div class="muted">Room: CS Building 101</div>
-                </div>
-                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openFacultyClassroom('CS401')">
-                  <div style="font-weight: 800; font-size: 18px; color: #dc2626;">CS401</div>
-                  <div style="font-size: 16px; margin-bottom: 8px;">Algorithms</div>
-                  <div class="muted">38 students • Fall 2025</div>
-                  <div class="muted" style="margin-top: 8px;">Tue/Thu 10:00-11:30 AM</div>
-                  <div class="muted">Room: CS Building 205</div>
-                </div>
-              </div>
-            </div>
+        <nav class="menu faculty-menu" id="facultyMenu">
+          <div class="menu-item-wrapper">
+            <button class="active" data-section="dashboard"><span class="icon">≡</span><span class="label">Dashboard</span></button>
+          </div>
+          <div class="menu-item-wrapper">
+            <button data-section="classes"><span class="icon">📚</span><span class="label">Classes</span></button>
+          </div>
+          <div class="menu-item-wrapper">
+            <button data-section="grading"><span class="icon">A+</span><span class="label">Grading</span></button>
+          </div>
+          <div class="menu-item-wrapper">
+            <button data-section="calendar"><span class="icon">📅</span><span class="label">Calendar</span></button>
+          </div>
+          <button class="logout-btn" id="facultyLogoutBtn">Logout</button>
+        </nav>
+      </aside>
+
+      <main class="main">
+        <div class="topbar">
+          <div>
+            <div class="title faculty-title" id="facultyPageTitle">Dashboard</div>
+            <div class="clock" id="facultyClock">--:--</div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:center;">
+            <div id="facultyThemeInfo">Light Mode</div>
+            <button id="facultyThemeToggle" class="btn">Toggle Theme</button>
           </div>
         </div>
 
-        <!-- Grading Section -->
-        <div class="section-content" id="facultyGradingSection">
-          <div class="grid">
-            <div class="card faculty-card col-12">
-              <div class="card-header">
-                <div class="card-title">Pending Grading</div>
-                <button class="action-btn faculty-action" id="facultyGradeAll">Grade All</button>
-              </div>
-              <div class="student-work-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
-                <div class="student-work-card" style="background: white; border-radius: 8px; border: 1px solid #e5e7eb; padding: 16px;">
-                  <div class="assignment-title">Assignment 4: Binary Search Tree</div>
-                  <div class="assignment-due">Due: Oct 25, 11:59 PM</div>
-                  <div class="muted">CS301 - Data Structures</div>
-                  <div class="muted">42 submissions • 0 graded</div>
-                  <div class="assignment-actions" style="display: flex; gap: 12px; margin-top: 12px;">
-                    <button class="btn faculty-btn">Grade Submissions</button>
+        <section id="facultyContentArea">
+          <!-- Dashboard Section -->
+          <div class="section-content active" id="facultyDashboardSection">
+            <div class="grid">
+              <div class="card faculty-card col-4">
+                <div class="card-header">
+                  <div class="card-title">Faculty Profile</div>
+                </div>
+                <div style="display:flex;gap:12px;align-items:center;">
+                  <div style="width:64px;height:64px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;background:#dc2626;color:white;" id="facultyCardAvatar">JD</div>
+                  <div>
+                    <div style="font-weight:800" id="facultyCardName">Dr. Jane Doe</div>
+                    <div class="muted" id="facultyCardDepartment">Computer Science</div>
+                    <div class="muted" id="facultyCardID">ID: F2021001</div>
                   </div>
                 </div>
-                <div class="student-work-card" style="background: white; border-radius: 8px; border: 1px solid #e5e7eb; padding: 16px;">
-                  <div class="assignment-title">Midterm Exam</div>
-                  <div class="assignment-due">Due: Oct 18, 11:59 PM</div>
-                  <div class="muted">CS401 - Algorithms</div>
-                  <div class="muted">38 submissions • 12 graded</div>
-                  <div class="assignment-actions" style="display: flex; gap: 12px; margin-top: 12px;">
-                    <button class="btn faculty-btn">Continue Grading</button>
+                <div style="height:10px"></div>
+                <div class="muted">Position: Associate Professor</div>
+                <div class="muted">Office: CS Building 305</div>
+                <div class="muted">Email: j.doe@university.edu</div>
+              </div>
+
+              <div class="card faculty-card col-8">
+                <div class="card-header">
+                  <div class="card-title">Teaching Summary</div>
+                  <button class="action-btn faculty-action" id="facultyViewReports">View Reports</button>
+                </div>
+                <div class="stats-container">
+                  <div class="stat-card faculty-stat">
+                    <div class="stat-value" id="facultyCurrentCourses">4</div>
+                    <div class="stat-label">Current Courses</div>
+                  </div>
+                  <div class="stat-card faculty-stat">
+                    <div class="stat-value" id="facultyTotalStudents">142</div>
+                    <div class="stat-label">Total Students</div>
+                  </div>
+                  <div class="stat-card faculty-stat">
+                    <div class="stat-value" id="facultyPendingGrading">23</div>
+                    <div class="stat-label">Pending Grading</div>
+                  </div>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill faculty-progress" style="width: 75%"></div>
+                </div>
+                <div class="muted">Semester Progress: 75% complete</div>
+              </div>
+
+              <div class="card faculty-card col-12">
+                <div class="card-header">
+                  <div class="card-title">My Classes</div>
+                  <button class="action-btn faculty-action" id="facultyCreateClass">Create Class</button>
+                </div>
+                <div class="course-grid">
+                  <div class="course-card" style="cursor: pointer;" onclick="openFacultyClassroom('CS301')">
+                    <div style="font-weight: 800; font-size: 18px; color: #dc2626;">CS301</div>
+                    <div style="font-size: 16px; margin-bottom: 8px;">Data Structures</div>
+                    <div class="muted">42 students • Fall 2025</div>
+                    <div class="muted" style="margin-top: 8px;">5 assignments • 23 to grade</div>
+                  </div>
+                  <div class="course-card" style="cursor: pointer;" onclick="openFacultyClassroom('CS401')">
+                    <div style="font-weight: 800; font-size: 18px; color: #dc2626;">CS401</div>
+                    <div style="font-size: 16px; margin-bottom: 8px;">Algorithms</div>
+                    <div class="muted">38 students • Fall 2025</div>
+                    <div class="muted" style="margin-top: 8px;">3 assignments • All graded</div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Calendar Section -->
-        <div class="section-content" id="facultyCalendarSection">
-          <div class="grid">
-            <div class="card faculty-card col-12">
-              <div class="card-header">
-                <div class="card-title">Teaching Schedule</div>
-                <button class="action-btn faculty-action" id="facultyAddOfficeHours">Add Office Hours</button>
-              </div>
-              <div class="calendar-grid">
-                <div class="calendar-day">
-                  <div class="calendar-day-header">Mon</div>
-                  <div class="calendar-event faculty-calendar-event">Data Structures 9:00 AM</div>
-                  <div class="calendar-event faculty-calendar-event">Advanced Databases 1:00 PM</div>
+          <!-- Classes Section -->
+          <div class="section-content" id="facultyClassesSection">
+            <div class="grid">
+              <div class="card faculty-card col-12">
+                <div class="card-header">
+                  <div class="card-title">Course Management</div>
+                  <button class="action-btn faculty-action" id="facultyCreateNewClass">Create New Class</button>
                 </div>
-                <div class="calendar-day">
-                  <div class="calendar-day-header">Tue</div>
-                  <div class="calendar-event faculty-calendar-event">Algorithms 10:00 AM</div>
-                  <div class="calendar-event faculty-calendar-event">Machine Learning 2:00 PM</div>
-                </div>
-                <div class="calendar-day today">
-                  <div class="calendar-day-header">Wed</div>
-                  <div class="calendar-event faculty-calendar-event">Data Structures 9:00 AM</div>
-                  <div class="calendar-event faculty-calendar-event">Advanced Databases 1:00 PM</div>
+                <div class="course-grid">
+                  <div class="course-card" style="cursor: pointer;" onclick="openFacultyClassroom('CS301')">
+                    <div style="font-weight: 800; font-size: 18px; color: #dc2626;">CS301</div>
+                    <div style="font-size: 16px; margin-bottom: 8px;">Data Structures</div>
+                    <div class="muted">42 students • Fall 2025</div>
+                    <div class="muted" style="margin-top: 8px;">Mon/Wed/Fri 9:00-10:00 AM</div>
+                    <div class="muted">Room: CS Building 101</div>
+                  </div>
+                  <div class="course-card" style="cursor: pointer;" onclick="openFacultyClassroom('CS401')">
+                    <div style="font-weight: 800; font-size: 18px; color: #dc2626;">CS401</div>
+                    <div style="font-size: 16px; margin-bottom: 8px;">Algorithms</div>
+                    <div class="muted">38 students • Fall 2025</div>
+                    <div class="muted" style="margin-top: 8px;">Tue/Thu 10:00-11:30 AM</div>
+                    <div class="muted">Room: CS Building 205</div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-    </main>
+
+          <!-- Grading Section -->
+          <div class="section-content" id="facultyGradingSection">
+            <div class="grid">
+              <div class="card faculty-card col-12">
+                <div class="card-header">
+                  <div class="card-title">Pending Grading</div>
+                  <button class="action-btn faculty-action" id="facultyGradeAll">Grade All</button>
+                </div>
+                <div class="course-grid">
+                  <div class="course-card">
+                    <div class="assignment-title">Assignment 4: Binary Search Tree</div>
+                    <div class="assignment-due">Due: Oct 25, 11:59 PM</div>
+                    <div class="muted">CS301 - Data Structures</div>
+                    <div class="muted">42 submissions • 0 graded</div>
+                    <div class="assignment-actions" style="display: flex; gap: 12px; margin-top: 12px;">
+                      <button class="btn faculty-btn">Grade Submissions</button>
+                    </div>
+                  </div>
+                  <div class="course-card">
+                    <div class="assignment-title">Midterm Exam</div>
+                    <div class="assignment-due">Due: Oct 18, 11:59 PM</div>
+                    <div class="muted">CS401 - Algorithms</div>
+                    <div class="muted">38 submissions • 12 graded</div>
+                    <div class="assignment-actions" style="display: flex; gap: 12px; margin-top: 12px;">
+                      <button class="btn faculty-btn">Continue Grading</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Calendar Section -->
+          <div class="section-content" id="facultyCalendarSection">
+            <div class="grid">
+              <div class="card faculty-card col-12">
+                <div class="card-header">
+                  <div class="card-title">Teaching Schedule</div>
+                  <button class="action-btn faculty-action" id="facultyAddOfficeHours">Add Office Hours</button>
+                </div>
+                <div class="calendar-grid">
+                  <div class="calendar-day">
+                    <div class="calendar-day-header">Mon</div>
+                    <div class="calendar-event faculty-calendar-event">Data Structures 9:00 AM</div>
+                    <div class="calendar-event faculty-calendar-event">Advanced Databases 1:00 PM</div>
+                  </div>
+                  <div class="calendar-day">
+                    <div class="calendar-day-header">Tue</div>
+                    <div class="calendar-event faculty-calendar-event">Algorithms 10:00 AM</div>
+                    <div class="calendar-event faculty-calendar-event">Machine Learning 2:00 PM</div>
+                  </div>
+                  <div class="calendar-day today">
+                    <div class="calendar-day-header">Wed</div>
+                    <div class="calendar-event faculty-calendar-event">Data Structures 9:00 AM</div>
+                    <div class="calendar-event faculty-calendar-event">Advanced Databases 1:00 PM</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
   </div>
 
   <script>
@@ -1303,7 +1320,7 @@
     const facultyUsernameInput = document.getElementById('facultyUsername');
     const facultyPasswordInput = document.getElementById('facultyPassword');
 
-    // Student login - simplified (no password required)
+    // Student login
     studentLoginForm.addEventListener('submit', function(e) {
       e.preventDefault();
       
@@ -1315,7 +1332,7 @@
         return;
       }
       
-      // Simple validation - just check that fields are filled
+      // Simple validation
       if (fullName && studentNumber) {
         loginPage.style.display = 'none';
         studentPortal.style.display = 'flex';
@@ -1323,7 +1340,7 @@
       }
     });
 
-    // Faculty login - still requires password
+    // Faculty login
     facultyLoginForm.addEventListener('submit', function(e) {
       e.preventDefault();
       
