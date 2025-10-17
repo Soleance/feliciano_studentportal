@@ -843,6 +843,106 @@
       height: 100vh;
       overflow: hidden;
     }
+
+    /* Section-specific styles */
+    .section-content {
+      display: none;
+    }
+    .section-content.active {
+      display: block;
+    }
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .calendar-day {
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 8px;
+      min-height: 100px;
+      background: white;
+    }
+    body.theme-dark .calendar-day {
+      border: 1px solid #374151;
+      background: #1f2937;
+    }
+    .calendar-day-header {
+      font-weight: 600;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .calendar-event {
+      background: #dbeafe;
+      border-radius: 4px;
+      padding: 4px;
+      margin-bottom: 4px;
+      font-size: 12px;
+    }
+    body.theme-dark .calendar-event {
+      background: #1e3a8a;
+    }
+    .faculty-calendar-event {
+      background: #fef2f2;
+    }
+    body.theme-dark .faculty-calendar-event {
+      background: #7f1d1d;
+    }
+    .today {
+      background: #eff6ff;
+      border-color: #3b82f6;
+    }
+    body.theme-dark .today {
+      background: #1e3a8a;
+      border-color: #60a5fa;
+    }
+    .grade-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    body.theme-dark .grade-item {
+      border-bottom: 1px solid #374151;
+    }
+    .grade-course {
+      font-weight: 600;
+    }
+    .grade-score {
+      font-weight: 600;
+    }
+    .grade-letter {
+      width: 40px;
+      text-align: center;
+      font-weight: 600;
+      border-radius: 4px;
+      padding: 2px 4px;
+    }
+    .grade-a {
+      background: #dcfce7;
+      color: #166534;
+    }
+    .grade-b {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+    .grade-c {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    body.theme-dark .grade-a {
+      background: #166534;
+      color: #dcfce7;
+    }
+    body.theme-dark .grade-b {
+      background: #1e40af;
+      color: #dbeafe;
+    }
+    body.theme-dark .grade-c {
+      background: #92400e;
+      color: #fef3c7;
+    }
   </style>
 </head>
 <body class="theme-light">
@@ -944,265 +1044,432 @@
       </div>
 
       <section id="studentContentArea">
-        <!-- Student Dashboard -->
-        <div class="grid" id="studentDashboardSection">
-          <div class="card student-card col-4">
-            <div class="card-header">
-              <div class="card-title">Student Profile</div>
-            </div>
-            <div style="display:flex;gap:12px;align-items:center;">
-              <div style="width:64px;height:64px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;background:#1e3a8a;color:white;" id="studentCardAvatar">JD</div>
-              <div>
-                <div style="font-weight:800" id="studentCardName">Juan Dela Cruz</div>
-                <div class="muted" id="studentCardCourse">BS Information Technology</div>
-                <div class="muted" id="studentCardID">ID: UA202201623</div>
+        <!-- Dashboard Section -->
+        <div class="section-content active" id="studentDashboardSection">
+          <div class="grid">
+            <div class="card student-card col-4">
+              <div class="card-header">
+                <div class="card-title">Student Profile</div>
               </div>
+              <div style="display:flex;gap:12px;align-items:center;">
+                <div style="width:64px;height:64px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;background:#1e3a8a;color:white;" id="studentCardAvatar">JD</div>
+                <div>
+                  <div style="font-weight:800" id="studentCardName">Juan Dela Cruz</div>
+                  <div class="muted" id="studentCardCourse">BS Information Technology</div>
+                  <div class="muted" id="studentCardID">ID: UA202201623</div>
+                </div>
+              </div>
+              <div style="height:10px"></div>
+              <div class="muted">Year: 3rd Year</div>
+              <div class="muted">Status: Regular</div>
+              <div class="muted">College: Computer Studies</div>
             </div>
-            <div style="height:10px"></div>
-            <div class="muted">Year: 3rd Year</div>
-            <div class="muted">Status: Regular</div>
-            <div class="muted">College: Computer Studies</div>
-          </div>
 
-          <div class="card student-card col-8">
-            <div class="card-header">
-              <div class="card-title">Academic Summary</div>
-              <button class="action-btn student-action" id="studentViewTranscript">View Transcript</button>
+            <div class="card student-card col-8">
+              <div class="card-header">
+                <div class="card-title">Academic Summary</div>
+                <button class="action-btn student-action" id="studentViewTranscript">View Transcript</button>
+              </div>
+              <div class="stats-container">
+                <div class="stat-card student-stat">
+                  <div class="stat-value" id="studentCurrentGPA">3.25</div>
+                  <div class="stat-label">Current GPA</div>
+                </div>
+                <div class="stat-card student-stat">
+                  <div class="stat-value" id="studentCompletedCredits">78</div>
+                  <div class="stat-label">Credits Completed</div>
+                </div>
+                <div class="stat-card student-stat">
+                  <div class="stat-value" id="studentEnrolledCourses">5</div>
+                  <div class="stat-label">Current Courses</div>
+                </div>
+                <div class="stat-card student-stat">
+                  <div class="stat-value" id="studentGraduationProgress">65%</div>
+                  <div class="stat-label">Graduation Progress</div>
+                </div>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill student-progress" style="width: 65%"></div>
+              </div>
+              <div class="muted">You need 42 more credits to graduate</div>
             </div>
-            <div class="stats-container">
-              <div class="stat-card student-stat">
-                <div class="stat-value" id="studentCurrentGPA">3.25</div>
-                <div class="stat-label">Current GPA</div>
-              </div>
-              <div class="stat-card student-stat">
-                <div class="stat-value" id="studentCompletedCredits">78</div>
-                <div class="stat-label">Credits Completed</div>
-              </div>
-              <div class="stat-card student-stat">
-                <div class="stat-value" id="studentEnrolledCourses">5</div>
-                <div class="stat-label">Current Courses</div>
-              </div>
-              <div class="stat-card student-stat">
-                <div class="stat-value" id="studentGraduationProgress">65%</div>
-                <div class="stat-label">Graduation Progress</div>
-              </div>
-            </div>
-            <div class="progress-bar">
-              <div class="progress-fill student-progress" style="width: 65%"></div>
-            </div>
-            <div class="muted">You need 42 more credits to graduate</div>
-          </div>
 
-          <div class="card student-card col-12">
-            <div class="card-header">
-              <div class="card-title">My Classes</div>
-              <button class="action-btn student-action" id="studentJoinClass">Join Class</button>
+            <div class="card student-card col-12">
+              <div class="card-header">
+                <div class="card-title">My Classes</div>
+                <button class="action-btn student-action" id="studentJoinClass">Join Class</button>
+              </div>
+              <div class="course-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openStudentClassroom('CS301')">
+                  <div style="font-weight: 800; font-size: 18px; color: #1e3a8a;">CS301</div>
+                  <div style="font-size: 16px; margin-bottom: 8px;">Data Structures</div>
+                  <div class="muted">Dr. Johnson</div>
+                  <div class="muted" style="margin-top: 8px;">2 new announcements • 1 assignment due</div>
+                </div>
+                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openStudentClassroom('MATH202')">
+                  <div style="font-weight: 800; font-size: 18px; color: #1e3a8a;">MATH202</div>
+                  <div style="font-size: 16px; margin-bottom: 8px;">Calculus II</div>
+                  <div class="muted">Dr. Smith</div>
+                  <div class="muted" style="margin-top: 8px;">1 new announcement • Quiz tomorrow</div>
+                </div>
+                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openStudentClassroom('ENG201')">
+                  <div style="font-weight: 800; font-size: 18px; color: #1e3a8a;">ENG201</div>
+                  <div style="font-size: 16px; margin-bottom: 8px;">English Literature</div>
+                  <div class="muted">Prof. Davis</div>
+                  <div class="muted" style="margin-top: 8px;">Essay due Friday</div>
+                </div>
+                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openStudentClassroom('PHY101')">
+                  <div style="font-weight: 800; font-size: 18px; color: #1e3a8a;">PHY101</div>
+                  <div style="font-size: 16px; margin-bottom: 8px;">Physics I</div>
+                  <div class="muted">Dr. Wilson</div>
+                  <div class="muted" style="margin-top: 8px;">Lab report due next week</div>
+                </div>
+              </div>
             </div>
-            <div class="course-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
-              <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openStudentClassroom('CS301')">
-                <div style="font-weight: 800; font-size: 18px; color: #1e3a8a;">CS301</div>
-                <div style="font-size: 16px; margin-bottom: 8px;">Data Structures</div>
-                <div class="muted">Dr. Johnson</div>
-                <div class="muted" style="margin-top: 8px;">2 new announcements • 1 assignment due</div>
+          </div>
+        </div>
+
+        <!-- Classes Section -->
+        <div class="section-content" id="studentClassesSection">
+          <div class="grid">
+            <div class="card student-card col-12">
+              <div class="card-header">
+                <div class="card-title">My Courses</div>
+                <button class="action-btn student-action" id="studentJoinNewClass">Join New Class</button>
               </div>
-              <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openStudentClassroom('MATH202')">
-                <div style="font-weight: 800; font-size: 18px; color: #1e3a8a;">MATH202</div>
-                <div style="font-size: 16px; margin-bottom: 8px;">Calculus II</div>
-                <div class="muted">Dr. Smith</div>
-                <div class="muted" style="margin-top: 8px;">1 new announcement • Quiz tomorrow</div>
+              <div class="course-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openStudentClassroom('CS301')">
+                  <div style="font-weight: 800; font-size: 18px; color: #1e3a8a;">CS301</div>
+                  <div style="font-size: 16px; margin-bottom: 8px;">Data Structures</div>
+                  <div class="muted">Dr. Johnson</div>
+                  <div class="muted" style="margin-top: 8px;">Mon/Wed/Fri 9:00-10:00 AM</div>
+                  <div class="muted">Room: CS Building 101</div>
+                </div>
+                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openStudentClassroom('MATH202')">
+                  <div style="font-weight: 800; font-size: 18px; color: #1e3a8a;">MATH202</div>
+                  <div style="font-size: 16px; margin-bottom: 8px;">Calculus II</div>
+                  <div class="muted">Dr. Smith</div>
+                  <div class="muted" style="margin-top: 8px;">Tue/Thu 11:00 AM-12:30 PM</div>
+                  <div class="muted">Room: Math Building 205</div>
+                </div>
+                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openStudentClassroom('ENG201')">
+                  <div style="font-weight: 800; font-size: 18px; color: #1e3a8a;">ENG201</div>
+                  <div style="font-size: 16px; margin-bottom: 8px;">English Literature</div>
+                  <div class="muted">Prof. Davis</div>
+                  <div class="muted" style="margin-top: 8px;">Mon/Wed 2:00-3:30 PM</div>
+                  <div class="muted">Room: Humanities Building 102</div>
+                </div>
+                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openStudentClassroom('PHY101')">
+                  <div style="font-weight: 800; font-size: 18px; color: #1e3a8a;">PHY101</div>
+                  <div style="font-size: 16px; margin-bottom: 8px;">Physics I</div>
+                  <div class="muted">Dr. Wilson</div>
+                  <div class="muted" style="margin-top: 8px;">Tue/Thu 1:00-2:30 PM</div>
+                  <div class="muted">Room: Science Building 301</div>
+                </div>
               </div>
-              <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openStudentClassroom('ENG201')">
-                <div style="font-weight: 800; font-size: 18px; color: #1e3a8a;">ENG201</div>
-                <div style="font-size: 16px; margin-bottom: 8px;">English Literature</div>
-                <div class="muted">Prof. Davis</div>
-                <div class="muted" style="margin-top: 8px;">Essay due Friday</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Schedule Section -->
+        <div class="section-content" id="studentScheduleSection">
+          <div class="grid">
+            <div class="card student-card col-12">
+              <div class="card-header">
+                <div class="card-title">Weekly Schedule</div>
+                <button class="action-btn student-action" id="studentExportSchedule">Export Schedule</button>
               </div>
-              <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openStudentClassroom('PHY101')">
-                <div style="font-weight: 800; font-size: 18px; color: #1e3a8a;">PHY101</div>
-                <div style="font-size: 16px; margin-bottom: 8px;">Physics I</div>
-                <div class="muted">Dr. Wilson</div>
-                <div class="muted" style="margin-top: 8px;">Lab report due next week</div>
+              <div class="schedule-item">
+                <div class="schedule-time">9:00 AM</div>
+                <div class="schedule-course">Data Structures (CS301)</div>
+                <div class="schedule-location">CS Building 101</div>
+              </div>
+              <div class="schedule-item">
+                <div class="schedule-time">11:00 AM</div>
+                <div class="schedule-course">Calculus II (MATH202)</div>
+                <div class="schedule-location">Math Building 205</div>
+              </div>
+              <div class="schedule-item">
+                <div class="schedule-time">2:00 PM</div>
+                <div class="schedule-course">English Literature (ENG201)</div>
+                <div class="schedule-location">Humanities 102</div>
+              </div>
+              <div class="schedule-item">
+                <div class="schedule-time">1:00 PM</div>
+                <div class="schedule-course">Physics I (PHY101)</div>
+                <div class="schedule-location">Science Building 301</div>
+              </div>
+              <div class="schedule-item">
+                <div class="schedule-time">3:30 PM</div>
+                <div class="schedule-course">Study Group - Data Structures</div>
+                <div class="schedule-location">Library Study Room 3</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grades Section -->
+        <div class="section-content" id="studentGradesSection">
+          <div class="grid">
+            <div class="card student-card col-12">
+              <div class="card-header">
+                <div class="card-title">Current Grades</div>
+                <button class="action-btn student-action" id="studentViewGradeHistory">View Grade History</button>
+              </div>
+              <div class="grade-item">
+                <div class="grade-course">Data Structures (CS301)</div>
+                <div class="grade-score">88%</div>
+                <div class="grade-letter grade-b">B+</div>
+              </div>
+              <div class="grade-item">
+                <div class="grade-course">Calculus II (MATH202)</div>
+                <div class="grade-score">92%</div>
+                <div class="grade-letter grade-a">A-</div>
+              </div>
+              <div class="grade-item">
+                <div class="grade-course">English Literature (ENG201)</div>
+                <div class="grade-score">85%</div>
+                <div class="grade-letter grade-b">B</div>
+              </div>
+              <div class="grade-item">
+                <div class="grade-course">Physics I (PHY101)</div>
+                <div class="grade-score">79%</div>
+                <div class="grade-letter grade-c">C+</div>
+              </div>
+              <div class="grade-item">
+                <div class="grade-course">Computer Networks (CS302)</div>
+                <div class="grade-score">94%</div>
+                <div class="grade-letter grade-a">A</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Calendar Section -->
+        <div class="section-content" id="studentCalendarSection">
+          <div class="grid">
+            <div class="card student-card col-12">
+              <div class="card-header">
+                <div class="card-title">Academic Calendar</div>
+                <button class="action-btn student-action" id="studentAddEvent">Add Event</button>
+              </div>
+              <div class="calendar-grid">
+                <div class="calendar-day">
+                  <div class="calendar-day-header">Mon</div>
+                  <div class="calendar-event">Data Structures 9:00 AM</div>
+                  <div class="calendar-event">English Lit 2:00 PM</div>
+                </div>
+                <div class="calendar-day">
+                  <div class="calendar-day-header">Tue</div>
+                  <div class="calendar-event">Calculus II 11:00 AM</div>
+                  <div class="calendar-event">Physics I 1:00 PM</div>
+                </div>
+                <div class="calendar-day">
+                  <div class="calendar-day-header">Wed</div>
+                  <div class="calendar-event">Data Structures 9:00 AM</div>
+                  <div class="calendar-event">English Lit 2:00 PM</div>
+                </div>
+                <div class="calendar-day">
+                  <div class="calendar-day-header">Thu</div>
+                  <div class="calendar-event">Calculus II 11:00 AM</div>
+                  <div class="calendar-event">Physics I 1:00 PM</div>
+                </div>
+                <div class="calendar-day today">
+                  <div class="calendar-day-header">Fri</div>
+                  <div class="calendar-event">Data Structures 9:00 AM</div>
+                  <div class="calendar-event">Study Group 3:30 PM</div>
+                </div>
+                <div class="calendar-day">
+                  <div class="calendar-day-header">Sat</div>
+                  <div class="calendar-event">Assignment Due: Physics Lab</div>
+                </div>
+                <div class="calendar-day">
+                  <div class="calendar-day-header">Sun</div>
+                  <div class="calendar-event">No classes</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Student Classroom View -->
-        <div class="grid" id="studentClassroomSection" style="display:none">
-          <div class="col-12">
-            <div class="classroom-header" id="studentClassHeader">
-              <h2 id="studentClassName">Data Structures - CS301</h2>
-              <div class="muted" style="color: rgba(255,255,255,0.8);">Dr. Johnson • Fall 2025</div>
-              <div class="class-code">Class Code: cs301-abc123</div>
-            </div>
+        <div class="section-content" id="studentClassroomSection">
+          <div class="grid">
+            <div class="col-12">
+              <div class="classroom-header" id="studentClassHeader">
+                <h2 id="studentClassName">Data Structures - CS301</h2>
+                <div class="muted" style="color: rgba(255,255,255,0.8);">Dr. Johnson • Fall 2025</div>
+                <div class="class-code">Class Code: cs301-abc123</div>
+              </div>
 
-            <div class="classroom-nav">
-              <div class="classroom-nav-item active" data-tab="stream">Stream</div>
-              <div class="classroom-nav-item" data-tab="classwork">Classwork</div>
-              <div class="classroom-nav-item" data-tab="people">People</div>
-            </div>
+              <div class="classroom-nav">
+                <div class="classroom-nav-item active" data-tab="stream">Stream</div>
+                <div class="classroom-nav-item" data-tab="classwork">Classwork</div>
+                <div class="classroom-nav-item" data-tab="people">People</div>
+              </div>
 
-            <div id="studentClassContent">
-              <!-- Stream Tab -->
-              <div class="class-tab" id="studentStreamTab">
-                <div class="compose-area">
-                  <textarea class="compose-input" placeholder="Share something with your class..."></textarea>
-                  <div style="display:flex;justify-content:flex-end;gap:12px;">
-                    <button class="btn" style="background:#e5e7eb;">Cancel</button>
-                    <button class="btn student-btn">Post</button>
-                  </div>
-                </div>
-
-                <div class="stream-post">
-                  <div class="post-header">
-                    <div class="post-avatar student-post-avatar">DJ</div>
-                    <div class="post-info">
-                      <div class="post-author">Dr. Johnson</div>
-                      <div class="post-time">Yesterday at 2:30 PM</div>
+              <div id="studentClassContent">
+                <!-- Stream Tab -->
+                <div class="class-tab" id="studentStreamTab">
+                  <div class="compose-area">
+                    <textarea class="compose-input" placeholder="Share something with your class..."></textarea>
+                    <div style="display:flex;justify-content:flex-end;gap:12px;">
+                      <button class="btn" style="background:#e5e7eb;">Cancel</button>
+                      <button class="btn student-btn">Post</button>
                     </div>
                   </div>
-                  <div>
-                    <p>Reminder: The midterm exam will be held next Wednesday during our regular class time. Please bring your student ID and a calculator.</p>
-                    <p>The exam will cover everything we've learned up to and including binary search trees.</p>
-                  </div>
-                </div>
 
-                <div class="stream-post">
-                  <div class="post-header">
-                    <div class="post-avatar student-post-avatar">DJ</div>
-                    <div class="post-info">
-                      <div class="post-author">Dr. Johnson</div>
-                      <div class="post-time">October 10 at 10:15 AM</div>
+                  <div class="stream-post">
+                    <div class="post-header">
+                      <div class="post-avatar student-post-avatar">DJ</div>
+                      <div class="post-info">
+                        <div class="post-author">Dr. Johnson</div>
+                        <div class="post-time">Yesterday at 2:30 PM</div>
+                      </div>
+                    </div>
+                    <div>
+                      <p>Reminder: The midterm exam will be held next Wednesday during our regular class time. Please bring your student ID and a calculator.</p>
+                      <p>The exam will cover everything we've learned up to and including binary search trees.</p>
                     </div>
                   </div>
-                  <div>
-                    <p>New assignment posted: "Binary Search Tree Implementation"</p>
-                    <div class="assignment-card">
-                      <div class="assignment-title">Assignment 4: Binary Search Tree</div>
-                      <div class="assignment-due">Due: October 25, 2025 at 11:59 PM</div>
-                      <div class="muted">Implement a binary search tree with insertion, deletion, and traversal operations.</div>
-                      <div class="assignment-actions">
-                        <button class="btn student-btn">View Assignment</button>
-                        <button class="btn">Add to Calendar</button>
+
+                  <div class="stream-post">
+                    <div class="post-header">
+                      <div class="post-avatar student-post-avatar">DJ</div>
+                      <div class="post-info">
+                        <div class="post-author">Dr. Johnson</div>
+                        <div class="post-time">October 10 at 10:15 AM</div>
+                      </div>
+                    </div>
+                    <div>
+                      <p>New assignment posted: "Binary Search Tree Implementation"</p>
+                      <div class="assignment-card">
+                        <div class="assignment-title">Assignment 4: Binary Search Tree</div>
+                        <div class="assignment-due">Due: October 25, 2025 at 11:59 PM</div>
+                        <div class="muted">Implement a binary search tree with insertion, deletion, and traversal operations.</div>
+                        <div class="assignment-actions">
+                          <button class="btn student-btn">View Assignment</button>
+                          <button class="btn">Add to Calendar</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="stream-post">
+                    <div class="post-header">
+                      <div class="post-avatar student-post-avatar">DJ</div>
+                      <div class="post-info">
+                        <div class="post-author">Dr. Johnson</div>
+                        <div class="post-time">October 5 at 3:45 PM</div>
+                      </div>
+                    </div>
+                    <div>
+                      <p>I've uploaded the slides from today's lecture on AVL Trees. You can find them in the Classwork section under "Lecture Materials".</p>
+                      <div class="material-item">
+                        <div class="material-icon student-material-icon">📊</div>
+                        <div class="material-info">
+                          <div class="material-name">Lecture 8: AVL Trees</div>
+                          <div class="material-details">Slides • 2.4 MB</div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div class="stream-post">
-                  <div class="post-header">
-                    <div class="post-avatar student-post-avatar">DJ</div>
-                    <div class="post-info">
-                      <div class="post-author">Dr. Johnson</div>
-                      <div class="post-time">October 5 at 3:45 PM</div>
+                <!-- Classwork Tab -->
+                <div class="class-tab" id="studentClassworkTab" style="display:none">
+                  <div class="card student-card">
+                    <div class="card-header">
+                      <div class="card-title">Assignments</div>
+                    </div>
+                    <div class="student-work-grid">
+                      <div class="student-work-card">
+                        <div class="assignment-title">Assignment 4: Binary Search Tree</div>
+                        <div class="assignment-due">Due: Oct 25, 11:59 PM</div>
+                        <div class="muted">Implement BST operations</div>
+                        <div class="work-status status-assigned">Assigned</div>
+                      </div>
+                      <div class="student-work-card">
+                        <div class="assignment-title">Assignment 3: Linked Lists</div>
+                        <div class="assignment-due">Due: Oct 12, 11:59 PM</div>
+                        <div class="muted">Singly and doubly linked lists</div>
+                        <div class="work-status status-turned-in">Turned In</div>
+                        <div class="grade-display">Grade: 42/50</div>
+                      </div>
+                      <div class="student-work-card">
+                        <div class="assignment-title">Assignment 2: Recursion</div>
+                        <div class="assignment-due">Due: Sep 28, 11:59 PM</div>
+                        <div class="muted">Recursive algorithms</div>
+                        <div class="work-status status-turned-in">Turned In</div>
+                        <div class="grade-display">Grade: 45/50</div>
+                      </div>
                     </div>
                   </div>
-                  <div>
-                    <p>I've uploaded the slides from today's lecture on AVL Trees. You can find them in the Classwork section under "Lecture Materials".</p>
+
+                  <div class="card student-card" style="margin-top: 20px;">
+                    <div class="card-header">
+                      <div class="card-title">Materials</div>
+                    </div>
                     <div class="material-item">
                       <div class="material-icon student-material-icon">📊</div>
                       <div class="material-info">
                         <div class="material-name">Lecture 8: AVL Trees</div>
-                        <div class="material-details">Slides • 2.4 MB</div>
+                        <div class="material-details">Slides • October 5</div>
+                      </div>
+                    </div>
+                    <div class="material-item">
+                      <div class="material-icon student-material-icon">📄</div>
+                      <div class="material-info">
+                        <div class="material-name">Binary Search Trees Reading</div>
+                        <div class="material-details">PDF • October 1</div>
+                      </div>
+                    </div>
+                    <div class="material-item">
+                      <div class="material-icon student-material-icon">📊</div>
+                      <div class="material-info">
+                        <div class="material-name">Lecture 7: Binary Trees</div>
+                        <div class="material-details">Slides • September 28</div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <!-- Classwork Tab -->
-              <div class="class-tab" id="studentClassworkTab" style="display:none">
-                <div class="card student-card">
-                  <div class="card-header">
-                    <div class="card-title">Assignments</div>
-                  </div>
-                  <div class="student-work-grid">
-                    <div class="student-work-card">
-                      <div class="assignment-title">Assignment 4: Binary Search Tree</div>
-                      <div class="assignment-due">Due: Oct 25, 11:59 PM</div>
-                      <div class="muted">Implement BST operations</div>
-                      <div class="work-status status-assigned">Assigned</div>
+                <!-- People Tab -->
+                <div class="class-tab" id="studentPeopleTab" style="display:none">
+                  <div class="card student-card">
+                    <div class="card-header">
+                      <div class="card-title">Teachers</div>
                     </div>
-                    <div class="student-work-card">
-                      <div class="assignment-title">Assignment 3: Linked Lists</div>
-                      <div class="assignment-due">Due: Oct 12, 11:59 PM</div>
-                      <div class="muted">Singly and doubly linked lists</div>
-                      <div class="work-status status-turned-in">Turned In</div>
-                      <div class="grade-display">Grade: 42/50</div>
-                    </div>
-                    <div class="student-work-card">
-                      <div class="assignment-title">Assignment 2: Recursion</div>
-                      <div class="assignment-due">Due: Sep 28, 11:59 PM</div>
-                      <div class="muted">Recursive algorithms</div>
-                      <div class="work-status status-turned-in">Turned In</div>
-                      <div class="grade-display">Grade: 45/50</div>
+                    <div class="people-grid">
+                      <div class="person-card">
+                        <div class="person-avatar faculty-person-avatar">DJ</div>
+                        <div style="font-weight: 600;">Dr. Johnson</div>
+                        <div class="muted">Instructor</div>
+                        <div class="muted">johnson@university.edu</div>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div class="card student-card" style="margin-top: 20px;">
-                  <div class="card-header">
-                    <div class="card-title">Materials</div>
-                  </div>
-                  <div class="material-item">
-                    <div class="material-icon student-material-icon">📊</div>
-                    <div class="material-info">
-                      <div class="material-name">Lecture 8: AVL Trees</div>
-                      <div class="material-details">Slides • October 5</div>
+                  <div class="card student-card" style="margin-top: 20px;">
+                    <div class="card-header">
+                      <div class="card-title">Students (42)</div>
                     </div>
-                  </div>
-                  <div class="material-item">
-                    <div class="material-icon student-material-icon">📄</div>
-                    <div class="material-info">
-                      <div class="material-name">Binary Search Trees Reading</div>
-                      <div class="material-details">PDF • October 1</div>
-                    </div>
-                  </div>
-                  <div class="material-item">
-                    <div class="material-icon student-material-icon">📊</div>
-                    <div class="material-info">
-                      <div class="material-name">Lecture 7: Binary Trees</div>
-                      <div class="material-details">Slides • September 28</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- People Tab -->
-              <div class="class-tab" id="studentPeopleTab" style="display:none">
-                <div class="card student-card">
-                  <div class="card-header">
-                    <div class="card-title">Teachers</div>
-                  </div>
-                  <div class="people-grid">
-                    <div class="person-card">
-                      <div class="person-avatar faculty-person-avatar">DJ</div>
-                      <div style="font-weight: 600;">Dr. Johnson</div>
-                      <div class="muted">Instructor</div>
-                      <div class="muted">johnson@university.edu</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="card student-card" style="margin-top: 20px;">
-                  <div class="card-header">
-                    <div class="card-title">Students (42)</div>
-                  </div>
-                  <div class="people-grid">
-                    <div class="person-card">
-                      <div class="person-avatar student-person-avatar">JD</div>
-                      <div style="font-weight: 600;">Juan Dela Cruz</div>
-                      <div class="muted">You</div>
-                    </div>
-                    <div class="person-card">
-                      <div class="person-avatar student-person-avatar">MR</div>
-                      <div style="font-weight: 600;">Maria Rodriguez</div>
-                      <div class="muted">Classmate</div>
-                    </div>
-                    <div class="person-card">
-                      <div class="person-avatar student-person-avatar">AJ</div>
-                      <div style="font-weight: 600;">Alex Johnson</div>
-                      <div class="muted">Classmate</div>
+                    <div class="people-grid">
+                      <div class="person-card">
+                        <div class="person-avatar student-person-avatar">JD</div>
+                        <div style="font-weight: 600;">Juan Dela Cruz</div>
+                        <div class="muted">You</div>
+                      </div>
+                      <div class="person-card">
+                        <div class="person-avatar student-person-avatar">MR</div>
+                        <div style="font-weight: 600;">Maria Rodriguez</div>
+                        <div class="muted">Classmate</div>
+                      </div>
+                      <div class="person-card">
+                        <div class="person-avatar student-person-avatar">AJ</div>
+                        <div style="font-weight: 600;">Alex Johnson</div>
+                        <div class="muted">Classmate</div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1258,276 +1525,424 @@
       </div>
 
       <section id="facultyContentArea">
-        <div class="grid">
-          <div class="card faculty-card col-4">
-            <div class="card-header">
-              <div class="card-title">Faculty Profile</div>
-            </div>
-            <div style="display:flex;gap:12px;align-items:center;">
-              <div style="width:64px;height:64px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;background:#dc2626;color:white;" id="facultyCardAvatar">JD</div>
-              <div>
-                <div style="font-weight:800" id="facultyCardName">Dr. Jane Doe</div>
-                <div class="muted" id="facultyCardDepartment">Computer Science</div>
-                <div class="muted" id="facultyCardID">ID: F2021001</div>
+        <!-- Dashboard Section -->
+        <div class="section-content active" id="facultyDashboardSection">
+          <div class="grid">
+            <div class="card faculty-card col-4">
+              <div class="card-header">
+                <div class="card-title">Faculty Profile</div>
               </div>
+              <div style="display:flex;gap:12px;align-items:center;">
+                <div style="width:64px;height:64px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;background:#dc2626;color:white;" id="facultyCardAvatar">JD</div>
+                <div>
+                  <div style="font-weight:800" id="facultyCardName">Dr. Jane Doe</div>
+                  <div class="muted" id="facultyCardDepartment">Computer Science</div>
+                  <div class="muted" id="facultyCardID">ID: F2021001</div>
+                </div>
+              </div>
+              <div style="height:10px"></div>
+              <div class="muted">Position: Associate Professor</div>
+              <div class="muted">Office: CS Building 305</div>
+              <div class="muted">Email: j.doe@university.edu</div>
             </div>
-            <div style="height:10px"></div>
-            <div class="muted">Position: Associate Professor</div>
-            <div class="muted">Office: CS Building 305</div>
-            <div class="muted">Email: j.doe@university.edu</div>
-          </div>
 
-          <div class="card faculty-card col-8">
-            <div class="card-header">
-              <div class="card-title">Teaching Summary</div>
-              <button class="action-btn faculty-action" id="facultyViewReports">View Reports</button>
+            <div class="card faculty-card col-8">
+              <div class="card-header">
+                <div class="card-title">Teaching Summary</div>
+                <button class="action-btn faculty-action" id="facultyViewReports">View Reports</button>
+              </div>
+              <div class="stats-container">
+                <div class="stat-card faculty-stat">
+                  <div class="stat-value" id="facultyCurrentCourses">4</div>
+                  <div class="stat-label">Current Courses</div>
+                </div>
+                <div class="stat-card faculty-stat">
+                  <div class="stat-value" id="facultyTotalStudents">142</div>
+                  <div class="stat-label">Total Students</div>
+                </div>
+                <div class="stat-card faculty-stat">
+                  <div class="stat-value" id="facultyPendingGrading">23</div>
+                  <div class="stat-label">Pending Grading</div>
+                </div>
+                <div class="stat-card faculty-stat">
+                  <div class="stat-value" id="facultyOfficeHours">12</div>
+                  <div class="stat-label">Weekly Hours</div>
+                </div>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill faculty-progress" style="width: 75%"></div>
+              </div>
+              <div class="muted">Semester Progress: 75% complete</div>
             </div>
-            <div class="stats-container">
-              <div class="stat-card faculty-stat">
-                <div class="stat-value" id="facultyCurrentCourses">4</div>
-                <div class="stat-label">Current Courses</div>
-              </div>
-              <div class="stat-card faculty-stat">
-                <div class="stat-value" id="facultyTotalStudents">142</div>
-                <div class="stat-label">Total Students</div>
-              </div>
-              <div class="stat-card faculty-stat">
-                <div class="stat-value" id="facultyPendingGrading">23</div>
-                <div class="stat-label">Pending Grading</div>
-              </div>
-              <div class="stat-card faculty-stat">
-                <div class="stat-value" id="facultyOfficeHours">12</div>
-                <div class="stat-label">Weekly Hours</div>
-              </div>
-            </div>
-            <div class="progress-bar">
-              <div class="progress-fill faculty-progress" style="width: 75%"></div>
-            </div>
-            <div class="muted">Semester Progress: 75% complete</div>
-          </div>
 
-          <div class="card faculty-card col-12">
-            <div class="card-header">
-              <div class="card-title">My Classes</div>
-              <button class="action-btn faculty-action" id="facultyCreateClass">Create Class</button>
+            <div class="card faculty-card col-12">
+              <div class="card-header">
+                <div class="card-title">My Classes</div>
+                <button class="action-btn faculty-action" id="facultyCreateClass">Create Class</button>
+              </div>
+              <div class="course-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openFacultyClassroom('CS301')">
+                  <div style="font-weight: 800; font-size: 18px; color: #dc2626;">CS301</div>
+                  <div style="font-size: 16px; margin-bottom: 8px;">Data Structures</div>
+                  <div class="muted">42 students • Fall 2025</div>
+                  <div class="muted" style="margin-top: 8px;">5 assignments • 23 to grade</div>
+                </div>
+                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openFacultyClassroom('CS401')">
+                  <div style="font-weight: 800; font-size: 18px; color: #dc2626;">CS401</div>
+                  <div style="font-size: 16px; margin-bottom: 8px;">Algorithms</div>
+                  <div class="muted">38 students • Fall 2025</div>
+                  <div class="muted" style="margin-top: 8px;">3 assignments • All graded</div>
+                </div>
+                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openFacultyClassroom('CS501')">
+                  <div style="font-weight: 800; font-size: 18px; color: #dc2626;">CS501</div>
+                  <div style="font-size: 16px; margin-bottom: 8px;">Advanced Databases</div>
+                  <div class="muted">24 students • Fall 2025</div>
+                  <div class="muted" style="margin-top: 8px;">Project phase 2 starting</div>
+                </div>
+                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openFacultyClassroom('CS601')">
+                  <div style="font-weight: 800; font-size: 18px; color: #dc2626;">CS601</div>
+                  <div style="font-size: 16px; margin-bottom: 8px;">Machine Learning</div>
+                  <div class="muted">18 students • Fall 2025</div>
+                  <div class="muted" style="margin-top: 8px;">Research papers discussion</div>
+                </div>
+              </div>
             </div>
-            <div class="course-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
-              <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openFacultyClassroom('CS301')">
-                <div style="font-weight: 800; font-size: 18px; color: #dc2626;">CS301</div>
-                <div style="font-size: 16px; margin-bottom: 8px;">Data Structures</div>
-                <div class="muted">42 students • Fall 2025</div>
-                <div class="muted" style="margin-top: 8px;">5 assignments • 23 to grade</div>
+          </div>
+        </div>
+
+        <!-- Classes Section -->
+        <div class="section-content" id="facultyClassesSection">
+          <div class="grid">
+            <div class="card faculty-card col-12">
+              <div class="card-header">
+                <div class="card-title">Course Management</div>
+                <button class="action-btn faculty-action" id="facultyCreateNewClass">Create New Class</button>
               </div>
-              <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openFacultyClassroom('CS401')">
-                <div style="font-weight: 800; font-size: 18px; color: #dc2626;">CS401</div>
-                <div style="font-size: 16px; margin-bottom: 8px;">Algorithms</div>
-                <div class="muted">38 students • Fall 2025</div>
-                <div class="muted" style="margin-top: 8px;">3 assignments • All graded</div>
+              <div class="course-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openFacultyClassroom('CS301')">
+                  <div style="font-weight: 800; font-size: 18px; color: #dc2626;">CS301</div>
+                  <div style="font-size: 16px; margin-bottom: 8px;">Data Structures</div>
+                  <div class="muted">42 students • Fall 2025</div>
+                  <div class="muted" style="margin-top: 8px;">Mon/Wed/Fri 9:00-10:00 AM</div>
+                  <div class="muted">Room: CS Building 101</div>
+                </div>
+                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openFacultyClassroom('CS401')">
+                  <div style="font-weight: 800; font-size: 18px; color: #dc2626;">CS401</div>
+                  <div style="font-size: 16px; margin-bottom: 8px;">Algorithms</div>
+                  <div class="muted">38 students • Fall 2025</div>
+                  <div class="muted" style="margin-top: 8px;">Tue/Thu 10:00-11:30 AM</div>
+                  <div class="muted">Room: CS Building 205</div>
+                </div>
+                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openFacultyClassroom('CS501')">
+                  <div style="font-weight: 800; font-size: 18px; color: #dc2626;">CS501</div>
+                  <div style="font-size: 16px; margin-bottom: 8px;">Advanced Databases</div>
+                  <div class="muted">24 students • Fall 2025</div>
+                  <div class="muted" style="margin-top: 8px;">Mon/Wed 1:00-2:30 PM</div>
+                  <div class="muted">Room: CS Building 302</div>
+                </div>
+                <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openFacultyClassroom('CS601')">
+                  <div style="font-weight: 800; font-size: 18px; color: #dc2626;">CS601</div>
+                  <div style="font-size: 16px; margin-bottom: 8px;">Machine Learning</div>
+                  <div class="muted">18 students • Fall 2025</div>
+                  <div class="muted" style="margin-top: 8px;">Tue/Thu 2:00-3:30 PM</div>
+                  <div class="muted">Room: CS Building 401</div>
+                </div>
               </div>
-              <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openFacultyClassroom('CS501')">
-                <div style="font-weight: 800; font-size: 18px; color: #dc2626;">CS501</div>
-                <div style="font-size: 16px; margin-bottom: 8px;">Advanced Databases</div>
-                <div class="muted">24 students • Fall 2025</div>
-                <div class="muted" style="margin-top: 8px;">Project phase 2 starting</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grading Section -->
+        <div class="section-content" id="facultyGradingSection">
+          <div class="grid">
+            <div class="card faculty-card col-12">
+              <div class="card-header">
+                <div class="card-title">Pending Grading</div>
+                <button class="action-btn faculty-action" id="facultyGradeAll">Grade All</button>
               </div>
-              <div class="course-card" style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer;" onclick="openFacultyClassroom('CS601')">
-                <div style="font-weight: 800; font-size: 18px; color: #dc2626;">CS601</div>
-                <div style="font-size: 16px; margin-bottom: 8px;">Machine Learning</div>
-                <div class="muted">18 students • Fall 2025</div>
-                <div class="muted" style="margin-top: 8px;">Research papers discussion</div>
+              <div class="student-work-grid">
+                <div class="student-work-card">
+                  <div class="assignment-title">Assignment 4: Binary Search Tree</div>
+                  <div class="assignment-due">Due: Oct 25, 11:59 PM</div>
+                  <div class="muted">CS301 - Data Structures</div>
+                  <div class="muted">42 submissions • 0 graded</div>
+                  <div class="assignment-actions">
+                    <button class="btn faculty-btn">Grade Submissions</button>
+                  </div>
+                </div>
+                <div class="student-work-card">
+                  <div class="assignment-title">Midterm Exam</div>
+                  <div class="assignment-due">Due: Oct 18, 11:59 PM</div>
+                  <div class="muted">CS401 - Algorithms</div>
+                  <div class="muted">38 submissions • 12 graded</div>
+                  <div class="assignment-actions">
+                    <button class="btn faculty-btn">Continue Grading</button>
+                  </div>
+                </div>
+                <div class="student-work-card">
+                  <div class="assignment-title">Project Phase 1</div>
+                  <div class="assignment-due">Due: Oct 10, 11:59 PM</div>
+                  <div class="muted">CS501 - Advanced Databases</div>
+                  <div class="muted">24 submissions • 18 graded</div>
+                  <div class="assignment-actions">
+                    <button class="btn faculty-btn">Finish Grading</button>
+                  </div>
+                </div>
+                <div class="student-work-card">
+                  <div class="assignment-title">Research Paper Review</div>
+                  <div class="assignment-due">Due: Oct 5, 11:59 PM</div>
+                  <div class="muted">CS601 - Machine Learning</div>
+                  <div class="muted">18 submissions • All graded</div>
+                  <div class="assignment-actions">
+                    <button class="btn">View Grades</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Calendar Section -->
+        <div class="section-content" id="facultyCalendarSection">
+          <div class="grid">
+            <div class="card faculty-card col-12">
+              <div class="card-header">
+                <div class="card-title">Teaching Schedule</div>
+                <button class="action-btn faculty-action" id="facultyAddOfficeHours">Add Office Hours</button>
+              </div>
+              <div class="calendar-grid">
+                <div class="calendar-day">
+                  <div class="calendar-day-header">Mon</div>
+                  <div class="calendar-event faculty-calendar-event">Data Structures 9:00 AM</div>
+                  <div class="calendar-event faculty-calendar-event">Advanced Databases 1:00 PM</div>
+                  <div class="calendar-event faculty-calendar-event">Office Hours 3:00-5:00 PM</div>
+                </div>
+                <div class="calendar-day">
+                  <div class="calendar-day-header">Tue</div>
+                  <div class="calendar-event faculty-calendar-event">Algorithms 10:00 AM</div>
+                  <div class="calendar-event faculty-calendar-event">Machine Learning 2:00 PM</div>
+                  <div class="calendar-event faculty-calendar-event">Department Meeting 4:00 PM</div>
+                </div>
+                <div class="calendar-day">
+                  <div class="calendar-day-header">Wed</div>
+                  <div class="calendar-event faculty-calendar-event">Data Structures 9:00 AM</div>
+                  <div class="calendar-event faculty-calendar-event">Advanced Databases 1:00 PM</div>
+                  <div class="calendar-event faculty-calendar-event">Research Group 3:00 PM</div>
+                </div>
+                <div class="calendar-day">
+                  <div class="calendar-day-header">Thu</div>
+                  <div class="calendar-event faculty-calendar-event">Algorithms 10:00 AM</div>
+                  <div class="calendar-event faculty-calendar-event">Machine Learning 2:00 PM</div>
+                  <div class="calendar-event faculty-calendar-event">Office Hours 3:00-5:00 PM</div>
+                </div>
+                <div class="calendar-day today">
+                  <div class="calendar-day-header">Fri</div>
+                  <div class="calendar-event faculty-calendar-event">Data Structures 9:00 AM</div>
+                  <div class="calendar-event faculty-calendar-event">Faculty Senate 1:00 PM</div>
+                </div>
+                <div class="calendar-day">
+                  <div class="calendar-day-header">Sat</div>
+                  <div class="calendar-event faculty-calendar-event">Conference Prep</div>
+                </div>
+                <div class="calendar-day">
+                  <div class="calendar-day-header">Sun</div>
+                  <div class="calendar-event faculty-calendar-event">No scheduled events</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Faculty Classroom View -->
-        <div class="grid" id="facultyClassroomSection" style="display:none">
-          <div class="col-12">
-            <div class="classroom-header faculty-classroom-header" id="facultyClassHeader">
-              <h2 id="facultyClassName">Data Structures - CS301</h2>
-              <div class="muted" style="color: rgba(255,255,255,0.8);">42 students • Fall 2025</div>
-              <div class="class-code">Class Code: cs301-abc123</div>
-            </div>
-
-            <div class="classroom-nav">
-              <div class="classroom-nav-item faculty-classroom-nav-item active" data-tab="stream">Stream</div>
-              <div class="classroom-nav-item faculty-classroom-nav-item" data-tab="classwork">Classwork</div>
-              <div class="classroom-nav-item faculty-classroom-nav-item" data-tab="people">People</div>
-              <div class="classroom-nav-item faculty-classroom-nav-item" data-tab="grades">Grades</div>
-            </div>
-
-            <div id="facultyClassContent">
-              <!-- Stream Tab -->
-              <div class="class-tab" id="facultyStreamTab">
-                <div class="compose-area">
-                  <textarea class="compose-input" placeholder="Announce something to your class..."></textarea>
-                  <div style="display:flex;justify-content:flex-end;gap:12px;">
-                    <button class="btn" style="background:#e5e7eb;">Cancel</button>
-                    <button class="btn faculty-btn">Post</button>
-                  </div>
-                </div>
-
-                <div class="stream-post">
-                  <div class="post-header">
-                    <div class="post-avatar faculty-post-avatar">JD</div>
-                    <div class="post-info">
-                      <div class="post-author">Dr. Jane Doe</div>
-                      <div class="post-time">Yesterday at 2:30 PM</div>
-                    </div>
-                  </div>
-                  <div>
-                    <p>Reminder: The midterm exam will be held next Wednesday during our regular class time. Please bring your student ID and a calculator.</p>
-                    <p>The exam will cover everything we've learned up to and including binary search trees.</p>
-                  </div>
-                </div>
-
-                <div class="stream-post">
-                  <div class="post-header">
-                    <div class="post-avatar faculty-post-avatar">JD</div>
-                    <div class="post-info">
-                      <div class="post-author">Dr. Jane Doe</div>
-                      <div class="post-time">October 10 at 10:15 AM</div>
-                    </div>
-                  </div>
-                  <div>
-                    <p>New assignment posted: "Binary Search Tree Implementation"</p>
-                    <div class="assignment-card faculty-assignment-card">
-                      <div class="assignment-title">Assignment 4: Binary Search Tree</div>
-                      <div class="assignment-due">Due: October 25, 2025 at 11:59 PM</div>
-                      <div class="muted">Implement a binary search tree with insertion, deletion, and traversal operations.</div>
-                      <div class="assignment-actions">
-                        <button class="btn faculty-btn">Edit Assignment</button>
-                        <button class="btn">View Submissions</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+        <div class="section-content" id="facultyClassroomSection">
+          <div class="grid">
+            <div class="col-12">
+              <div class="classroom-header faculty-classroom-header" id="facultyClassHeader">
+                <h2 id="facultyClassName">Data Structures - CS301</h2>
+                <div class="muted" style="color: rgba(255,255,255,0.8);">42 students • Fall 2025</div>
+                <div class="class-code">Class Code: cs301-abc123</div>
               </div>
 
-              <!-- Classwork Tab -->
-              <div class="class-tab" id="facultyClassworkTab" style="display:none">
-                <div class="card faculty-card">
-                  <div class="card-header">
-                    <div class="card-title">Assignments</div>
-                    <button class="btn faculty-btn">Create Assignment</button>
-                  </div>
-                  <div class="student-work-grid">
-                    <div class="student-work-card">
-                      <div class="assignment-title">Assignment 4: Binary Search Tree</div>
-                      <div class="assignment-due">Due: Oct 25, 11:59 PM</div>
-                      <div class="muted">42 students • 0 turned in</div>
-                      <div class="assignment-actions">
-                        <button class="btn faculty-btn">Edit</button>
-                        <button class="btn">View</button>
-                      </div>
-                    </div>
-                    <div class="student-work-card">
-                      <div class="assignment-title">Assignment 3: Linked Lists</div>
-                      <div class="assignment-due">Due: Oct 12, 11:59 PM</div>
-                      <div class="muted">42 students • 40 turned in</div>
-                      <div class="assignment-actions">
-                        <button class="btn faculty-btn">Grade</button>
-                        <button class="btn">View</button>
-                      </div>
-                    </div>
-                    <div class="student-work-card">
-                      <div class="assignment-title">Assignment 2: Recursion</div>
-                      <div class="assignment-due">Due: Sep 28, 11:59 PM</div>
-                      <div class="muted">42 students • All graded</div>
-                      <div class="assignment-actions">
-                        <button class="btn">View Grades</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div class="classroom-nav">
+                <div class="classroom-nav-item faculty-classroom-nav-item active" data-tab="stream">Stream</div>
+                <div class="classroom-nav-item faculty-classroom-nav-item" data-tab="classwork">Classwork</div>
+                <div class="classroom-nav-item faculty-classroom-nav-item" data-tab="people">People</div>
+                <div class="classroom-nav-item faculty-classroom-nav-item" data-tab="grades">Grades</div>
               </div>
 
-              <!-- People Tab -->
-              <div class="class-tab" id="facultyPeopleTab" style="display:none">
-                <div class="card faculty-card">
-                  <div class="card-header">
-                    <div class="card-title">Teachers</div>
-                    <button class="btn faculty-btn">Invite Teachers</button>
+              <div id="facultyClassContent">
+                <!-- Stream Tab -->
+                <div class="class-tab" id="facultyStreamTab">
+                  <div class="compose-area">
+                    <textarea class="compose-input" placeholder="Announce something to your class..."></textarea>
+                    <div style="display:flex;justify-content:flex-end;gap:12px;">
+                      <button class="btn" style="background:#e5e7eb;">Cancel</button>
+                      <button class="btn faculty-btn">Post</button>
+                    </div>
                   </div>
-                  <div class="people-grid">
-                    <div class="person-card">
-                      <div class="person-avatar faculty-person-avatar">JD</div>
-                      <div style="font-weight: 600;">Dr. Jane Doe</div>
-                      <div class="muted">Instructor</div>
-                      <div class="muted">j.doe@university.edu</div>
+
+                  <div class="stream-post">
+                    <div class="post-header">
+                      <div class="post-avatar faculty-post-avatar">JD</div>
+                      <div class="post-info">
+                        <div class="post-author">Dr. Jane Doe</div>
+                        <div class="post-time">Yesterday at 2:30 PM</div>
+                      </div>
+                    </div>
+                    <div>
+                      <p>Reminder: The midterm exam will be held next Wednesday during our regular class time. Please bring your student ID and a calculator.</p>
+                      <p>The exam will cover everything we've learned up to and including binary search trees.</p>
+                    </div>
+                  </div>
+
+                  <div class="stream-post">
+                    <div class="post-header">
+                      <div class="post-avatar faculty-post-avatar">JD</div>
+                      <div class="post-info">
+                        <div class="post-author">Dr. Jane Doe</div>
+                        <div class="post-time">October 10 at 10:15 AM</div>
+                      </div>
+                    </div>
+                    <div>
+                      <p>New assignment posted: "Binary Search Tree Implementation"</p>
+                      <div class="assignment-card faculty-assignment-card">
+                        <div class="assignment-title">Assignment 4: Binary Search Tree</div>
+                        <div class="assignment-due">Due: October 25, 2025 at 11:59 PM</div>
+                        <div class="muted">Implement a binary search tree with insertion, deletion, and traversal operations.</div>
+                        <div class="assignment-actions">
+                          <button class="btn faculty-btn">Edit Assignment</button>
+                          <button class="btn">View Submissions</button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <div class="card faculty-card" style="margin-top: 20px;">
-                  <div class="card-header">
-                    <div class="card-title">Students (42)</div>
-                    <button class="btn faculty-btn">Invite Students</button>
-                  </div>
-                  <div class="people-grid">
-                    <div class="person-card">
-                      <div class="person-avatar student-person-avatar">JD</div>
-                      <div style="font-weight: 600;">Juan Dela Cruz</div>
-                      <div class="muted">UA202201623</div>
-                      <div class="muted">juan.delacruz@student.edu</div>
+                <!-- Classwork Tab -->
+                <div class="class-tab" id="facultyClassworkTab" style="display:none">
+                  <div class="card faculty-card">
+                    <div class="card-header">
+                      <div class="card-title">Assignments</div>
+                      <button class="btn faculty-btn">Create Assignment</button>
                     </div>
-                    <div class="person-card">
-                      <div class="person-avatar student-person-avatar">MR</div>
-                      <div style="font-weight: 600;">Maria Rodriguez</div>
-                      <div class="muted">UA202201624</div>
-                      <div class="muted">maria.rodriguez@student.edu</div>
-                    </div>
-                    <div class="person-card">
-                      <div class="person-avatar student-person-avatar">AJ</div>
-                      <div style="font-weight: 600;">Alex Johnson</div>
-                      <div class="muted">UA202201625</div>
-                      <div class="muted">alex.johnson@student.edu</div>
+                    <div class="student-work-grid">
+                      <div class="student-work-card">
+                        <div class="assignment-title">Assignment 4: Binary Search Tree</div>
+                        <div class="assignment-due">Due: Oct 25, 11:59 PM</div>
+                        <div class="muted">42 students • 0 turned in</div>
+                        <div class="assignment-actions">
+                          <button class="btn faculty-btn">Edit</button>
+                          <button class="btn">View</button>
+                        </div>
+                      </div>
+                      <div class="student-work-card">
+                        <div class="assignment-title">Assignment 3: Linked Lists</div>
+                        <div class="assignment-due">Due: Oct 12, 11:59 PM</div>
+                        <div class="muted">42 students • 40 turned in</div>
+                        <div class="assignment-actions">
+                          <button class="btn faculty-btn">Grade</button>
+                          <button class="btn">View</button>
+                        </div>
+                      </div>
+                      <div class="student-work-card">
+                        <div class="assignment-title">Assignment 2: Recursion</div>
+                        <div class="assignment-due">Due: Sep 28, 11:59 PM</div>
+                        <div class="muted">42 students • All graded</div>
+                        <div class="assignment-actions">
+                          <button class="btn">View Grades</button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <!-- Grades Tab -->
-              <div class="class-tab" id="facultyGradesTab" style="display:none">
-                <div class="card faculty-card">
-                  <div class="card-header">
-                    <div class="card-title">Gradebook</div>
-                    <button class="btn faculty-btn">Export Grades</button>
+                <!-- People Tab -->
+                <div class="class-tab" id="facultyPeopleTab" style="display:none">
+                  <div class="card faculty-card">
+                    <div class="card-header">
+                      <div class="card-title">Teachers</div>
+                      <button class="btn faculty-btn">Invite Teachers</button>
+                    </div>
+                    <div class="people-grid">
+                      <div class="person-card">
+                        <div class="person-avatar faculty-person-avatar">JD</div>
+                        <div style="font-weight: 600;">Dr. Jane Doe</div>
+                        <div class="muted">Instructor</div>
+                        <div class="muted">j.doe@university.edu</div>
+                      </div>
+                    </div>
                   </div>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Student</th>
-                        <th>Assignment 1</th>
-                        <th>Assignment 2</th>
-                        <th>Assignment 3</th>
-                        <th>Current Grade</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>Juan Dela Cruz</td>
-                        <td>48/50</td>
-                        <td>45/50</td>
-                        <td>42/50</td>
-                        <td>90%</td>
-                      </tr>
-                      <tr>
-                        <td>Maria Rodriguez</td>
-                        <td>50/50</td>
-                        <td>48/50</td>
-                        <td>-</td>
-                        <td>87%</td>
-                      </tr>
-                      <tr>
-                        <td>Alex Johnson</td>
-                        <td>45/50</td>
-                        <td>42/50</td>
-                        <td>40/50</td>
-                        <td>85%</td>
-                      </tr>
-                    </tbody>
-                  </table>
+
+                  <div class="card faculty-card" style="margin-top: 20px;">
+                    <div class="card-header">
+                      <div class="card-title">Students (42)</div>
+                      <button class="btn faculty-btn">Invite Students</button>
+                    </div>
+                    <div class="people-grid">
+                      <div class="person-card">
+                        <div class="person-avatar student-person-avatar">JD</div>
+                        <div style="font-weight: 600;">Juan Dela Cruz</div>
+                        <div class="muted">UA202201623</div>
+                        <div class="muted">juan.delacruz@student.edu</div>
+                      </div>
+                      <div class="person-card">
+                        <div class="person-avatar student-person-avatar">MR</div>
+                        <div style="font-weight: 600;">Maria Rodriguez</div>
+                        <div class="muted">UA202201624</div>
+                        <div class="muted">maria.rodriguez@student.edu</div>
+                      </div>
+                      <div class="person-card">
+                        <div class="person-avatar student-person-avatar">AJ</div>
+                        <div style="font-weight: 600;">Alex Johnson</div>
+                        <div class="muted">UA202201625</div>
+                        <div class="muted">alex.johnson@student.edu</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Grades Tab -->
+                <div class="class-tab" id="facultyGradesTab" style="display:none">
+                  <div class="card faculty-card">
+                    <div class="card-header">
+                      <div class="card-title">Gradebook</div>
+                      <button class="btn faculty-btn">Export Grades</button>
+                    </div>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Student</th>
+                          <th>Assignment 1</th>
+                          <th>Assignment 2</th>
+                          <th>Assignment 3</th>
+                          <th>Current Grade</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Juan Dela Cruz</td>
+                          <td>48/50</td>
+                          <td>45/50</td>
+                          <td>42/50</td>
+                          <td>90%</td>
+                        </tr>
+                        <tr>
+                          <td>Maria Rodriguez</td>
+                          <td>50/50</td>
+                          <td>48/50</td>
+                          <td>-</td>
+                          <td>87%</td>
+                        </tr>
+                        <tr>
+                          <td>Alex Johnson</td>
+                          <td>45/50</td>
+                          <td>42/50</td>
+                          <td>40/50</td>
+                          <td>85%</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1634,19 +2049,12 @@
           const section = this.getAttribute('data-section');
           
           // Hide all sections
-          document.querySelectorAll('#studentContentArea > div').forEach(div => {
-            div.style.display = 'none';
+          document.querySelectorAll('#studentContentArea .section-content').forEach(div => {
+            div.classList.remove('active');
           });
           
           // Show selected section
-          if (section === 'dashboard') {
-            document.getElementById('studentDashboardSection').style.display = 'grid';
-          } else if (section === 'classes') {
-            document.getElementById('studentDashboardSection').style.display = 'grid';
-          } else {
-            // For other sections, show dashboard for now
-            document.getElementById('studentDashboardSection').style.display = 'grid';
-          }
+          document.getElementById('student' + section.charAt(0).toUpperCase() + section.slice(1) + 'Section').classList.add('active');
           
           // Update active button
           menuButtons.forEach(btn => btn.classList.remove('active'));
@@ -1724,7 +2132,15 @@
         button.addEventListener('click', function() {
           const section = this.getAttribute('data-section');
           
-          // For now, just update active button (all content is in dashboard)
+          // Hide all sections
+          document.querySelectorAll('#facultyContentArea .section-content').forEach(div => {
+            div.classList.remove('active');
+          });
+          
+          // Show selected section
+          document.getElementById('faculty' + section.charAt(0).toUpperCase() + section.slice(1) + 'Section').classList.add('active');
+          
+          // Update active button
           menuButtons.forEach(btn => btn.classList.remove('active'));
           this.classList.add('active');
           
@@ -1787,8 +2203,10 @@
 
     // Open Student Classroom
     function openStudentClassroom(courseCode) {
-      document.getElementById('studentDashboardSection').style.display = 'none';
-      document.getElementById('studentClassroomSection').style.display = 'grid';
+      document.querySelectorAll('#studentContentArea .section-content').forEach(div => {
+        div.classList.remove('active');
+      });
+      document.getElementById('studentClassroomSection').classList.add('active');
       
       // Update classroom header
       const courseNames = {
@@ -1804,8 +2222,10 @@
 
     // Open Faculty Classroom
     function openFacultyClassroom(courseCode) {
-      document.querySelectorAll('#facultyContentArea > .grid')[0].style.display = 'none';
-      document.getElementById('facultyClassroomSection').style.display = 'grid';
+      document.querySelectorAll('#facultyContentArea .section-content').forEach(div => {
+        div.classList.remove('active');
+      });
+      document.getElementById('facultyClassroomSection').classList.add('active');
       
       // Update classroom header
       const courseNames = {
